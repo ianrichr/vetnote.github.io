@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.5e335cae.css","mappings":"AAAA,KACE,4BAA8B,CAC9B,YACF,CAEA,GACE,iBACF,CAEA,SACE,eAAgB,CAChB,UACF","sources":["styles.css"],"sourcesContent":["body {\n  font-family: Arial, sans-serif;\n  padding: 20px;\n}\n\nh1 {\n  text-align: center;\n}\n\ntextarea {\n  margin-top: 20px;\n  width: 100%;\n}\n"],"names":[],"sourceRoot":""}
