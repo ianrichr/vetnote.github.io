@@ -1,26 +1,43 @@
-import React from 'react';
+import React from "react";
 
 interface VisitTypeSelectorProps {
-  visitType: string;
-  setVisitType: (type: string) => void;
+  value: string;
+  onChange: (value: string) => void;
 }
 
-const VisitTypeSelector: React.FC<VisitTypeSelectorProps> = ({ visitType, setVisitType }) => {
+const VisitTypeSelector: React.FC<VisitTypeSelectorProps> = ({ value, onChange }) => {
   return (
-    <div className="mb-4">
-      <h3 className="font-semibold">Visit Type</h3>
-      <div className="flex space-x-4">
-        {['Wellness', 'Sick'].map((type) => (
-          <button
-            key={type}
-            onClick={() => setVisitType(type)}
-            className={`px-4 py-2 rounded ${
-              visitType === type ? 'bg-blue-500 text-white' : 'bg-gray-200'
-            }`}
-          >
-            {type}
-          </button>
-        ))}
+    <div>
+      <h2>Visit Type:</h2>
+      <div>
+        <button
+          onClick={() => onChange("Wellness")}
+          style={{
+            padding: "10px 20px",
+            margin: "5px",
+            backgroundColor: value === "Wellness" ? "#28a745" : "#ccc",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          Wellness
+        </button>
+        <button
+          onClick={() => onChange("Sick")}
+          style={{
+            padding: "10px 20px",
+            margin: "5px",
+            backgroundColor: value === "Sick" ? "#dc3545" : "#ccc",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          Sick
+        </button>
       </div>
     </div>
   );

@@ -3,8 +3,12 @@ import AbnormalitiesSelector from "./AbnormalitiesSelector";
 import EaseOfExaminationSelector from "./EaseOfExaminationSelector";
 import SubjectiveAssessmentSelector from "./SubjectiveAssessmentSelector";
 import TemperamentSelector from "./TemperamentSelector";
+import AnimalSelector from "./AnimalSelector";
+import VisitTypeSelector from "./VisitTypeSelector";
 
 const TemplateGenerator: React.FC = () => {
+  const [animal, setAnimal] = useState("Dog");
+  const [visitType, setVisitType] = useState("Wellness");
   const [abnormalities, setAbnormalities] = useState<string[]>([]);
   const [easeOfExamination, setEaseOfExamination] = useState(5);
   const [subjectiveAssessment, setSubjectiveAssessment] = useState("BAR");
@@ -87,8 +91,47 @@ const TemplateGenerator: React.FC = () => {
     }).join("");
   };
 
+  const generatePlanText = () => {
+    if (visitType === "Wellness") {
+      if (animal === "Dog") {
+        return `
+          <li>Discussed above PE findings with owner</li>
+          <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>
+          <li>Discussed diet – discussed risks with grain free and raw diets – do not recommend!</li>
+          <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend simparica and discussed with owners difference between simparica and simparica trio. Owner elects for ***simparica OR simparica trio with HWT today.</li>
+          <li>Discussed activity and mobility – no changes noted by owner and no signs of arthritis.</li>
+          <li>Discussed vaccines – today due for ***</li>
+          <li>Discussed leptospirosis vaccine – now recommended as core vaccine by AAHA due to risks associated with disease and zoonotic risk. Recommend 1st lepto vaccine today and booster in 3-4 weeks. Discussed risks of lepto vaccine with owners.</li>
+          <li>Plan for today:</li>
+            <ul><li> </li></ul>
+          <li>Owner agrees with above plan and has no questions at this time.</li>
+        `;
+      } else if (animal === "Cat") {
+        return `
+          <li>Discussed above PE findings with owner</li>
+          <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>
+          <li>Discussed diet – discussed potential risks with grain free diets and cats – do not recommend at this time. Discussed risks with raw diets (especially poultry) and raw milk – increased risk for Avian influenza – do not recommend any raw diet including raw milk for cats.</li>
+          <li>Indoor/outdoor status – discussed risks associated with FIV/FeLV and avian influenza with owner.</li>
+          <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend revolution.</li>
+          <li>Discussed activity and mobility – no changes in jumping on couches/bed or using litterbox per owner report.</li>
+          <li>Discussed vaccines – today due for ***</li>
+          <li>Discussed FeLV vaccine – recommend for all cats under 1 yr of age and then for indoor/outdoor cats. ***Recommend FIV/FeLV test today and if negative recommend FeLV vax today and booster in 3-4 weeks. ***Recommend annual FeLV booster.</li>
+          <li>Plan for today:</li>
+            <ul><li> </li></ul>
+          <li>Owner agrees with above plan and has no questions at this time.</li>
+        `;
+      }
+    }
+    return `
+      <li>Discussed above PE findings with owner</li>
+      <li>Plan for today:</li>
+        <ul><li> </li></ul>
+      <li>Owner agrees with above plan and has no questions at this time.</li>
+    `;
+  };
+
   const templateHTML = `
-    <p><span><strong>OBJECTIVE</span></strong></p>
+    <p><strong>OBJECTIVE</strong></p>
     <ul>
       <li>Subjective Assessment: ${subjectiveAssessment}</li>
       <li>Ease of Examination (5/5 is the easiest): ${easeOfExamination}</li>
@@ -96,18 +139,14 @@ const TemplateGenerator: React.FC = () => {
       ${generateObjectiveText()}
     </ul>
     
-    <p><span><strong>DIAGNOSTICS</span></strong></p>
+    <p><strong>DIAGNOSTICS</strong></p>
     <ul><li> </li></ul>
     
-    <p><span><strong>ASSESSMENT</span></strong></p>
+    <p><strong>ASSESSMENT</strong></p>
     <ul><li>Apparently healthy!</li></ul>
     
-    <p><span><strong>PLAN</span></strong></p>
-    <ul>
-      <li>Discussed above PE findings with owner</li>
-      <li>Plan for today:</li>
-      <li>Owner agrees with above plan and has no questions at this time.</li>
-    </ul>
+    <p><strong>PLAN</strong></p>
+    <ul>${generatePlanText()}</ul>
 
     <p>KSW</p>
   `;
@@ -127,32 +166,40 @@ const TemplateGenerator: React.FC = () => {
   };
 
   return (
-    <div>
-      <SubjectiveAssessmentSelector
-        value={subjectiveAssessment}
-        onChange={setSubjectiveAssessment}
-      />
-      <EaseOfExaminationSelector value={easeOfExamination} onChange={setEaseOfExamination} />
-      <TemperamentSelector value={temperament} onChange={setTemperament} />
-      <AbnormalitiesSelector abnormalities={abnormalities} toggle={toggleAbnormality} />
-      
-      <h2>Generated Template</h2>
-      <div
-        ref={templateRef}
-        contentEditable
-        dangerouslySetInnerHTML={{ __html: templateHTML }}
-        style={{ width: "100%", fontFamily: "Arial" }}
-      ></div>
-
-      <div style={{ marginTop: "10px" }}>
-        <button onClick={copyToClipboard} style={{ padding: "10px 20px", fontSize: "16px" }}>
-          Copy to Clipboard
-        </button>
-        {copySuccess && (
-          <span style={{ marginLeft: "10px", color: "green", fontWeight: "bold" }}>
-            Copied!
-          </span>
-        )}
+    <div style={{ display: "flex", justifyContent: "space-between", gap: "20px" }}>
+      <div style={{ width: "40%" }}>
+        <AnimalSelector value={animal} onChange={setAnimal} />
+        <VisitTypeSelector value={visitType} onChange={setVisitType} />
+        <SubjectiveAssessmentSelector value={subjectiveAssessment} onChange={setSubjectiveAssessment} />
+        <EaseOfExaminationSelector value={easeOfExamination} onChange={setEaseOfExamination} />
+        <TemperamentSelector value={temperament} onChange={setTemperament} />
+        <AbnormalitiesSelector abnormalities={abnormalities} toggle={toggleAbnormality} />
+      </div>
+      <div style={{ width: "55%", textAlign: "left" }}>
+        <h2>Generated Template</h2>
+        <div
+          ref={templateRef}
+          contentEditable
+          dangerouslySetInnerHTML={{ __html: templateHTML }}
+          style={{
+            width: "100%",
+            fontFamily: "Arial",
+            border: "1px solid #ccc",
+            padding: "10px",
+            borderRadius: "5px",
+            minHeight: "200px",
+          }}
+        ></div>
+        <div style={{ marginTop: "10px" }}>
+          <button onClick={copyToClipboard} style={{ padding: "10px 20px", fontSize: "16px" }}>
+            Copy to Clipboard
+          </button>
+          {copySuccess && (
+            <span style={{ marginLeft: "10px", color: "green", fontWeight: "bold" }}>
+              Copied!
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
