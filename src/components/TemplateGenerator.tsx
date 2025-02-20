@@ -145,7 +145,11 @@ const TemplateGenerator: React.FC = () => {
 
   const generateAssessmentsText = () => {
     if (abnormalities.length != 0) {
-      if (eyesAbnormal) {
+      if (earsAbnormal) {
+        return `
+          <li>Otitis externa</li>
+        `;
+      } else if (eyesAbnormal) {
         return `
           <li>Corneal ulcer</li>
           <li>Conjunctivitis</li>
