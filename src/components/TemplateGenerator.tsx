@@ -15,6 +15,8 @@ const TemplateGenerator: React.FC = () => {
   const [temperament, setTemperament] = useState("Well-behaved");
   const [copySuccess, setCopySuccess] = useState(false);
   const templateRef = useRef<HTMLDivElement>(null);
+  let earsAbnormal = false;
+  let eyesAbnormal = false;
 
   const toggleAbnormality = (system: string) => {
     setAbnormalities((prev) =>
@@ -41,7 +43,34 @@ const TemplateGenerator: React.FC = () => {
     ];
 
     return systems.map((system) => {
-      if (system === "Cardiovascular") {
+      if (system === "Ears") {
+        if (abnormalities.includes(system)) {
+          earsAbnormal = true;
+          return `
+          <li>Ears: Abnormal</li>
+            <ul>
+              <li>AD</li>
+              <li>AS</li>
+            </ul>
+          `;
+        } else {
+          return `<li>Ears: Normal</li>`;
+        }
+      } else if (system === "Eyes") {
+        if (abnormalities.includes(system)) {
+          eyesAbnormal = true;
+          return `
+          <li>Eyes: Abnormal</li>
+            <ul>
+              <li>OD</li>
+              <li>OS</li>
+            </ul>
+          `;
+        } else {
+          return `<li>Eyes: Normal</li>`;
+        }
+      }
+      else if (system === "Cardiovascular") {
         if (abnormalities.includes(system)) {
           return `<li>Cardiovascular: Abnormal</li>`;
         } else {
@@ -91,7 +120,50 @@ const TemplateGenerator: React.FC = () => {
     }).join("");
   };
 
+  const generateDiagnosticsText = () => {
+    if (earsAbnormal) {
+      return `
+        <li>Ear cytology</li>
+          <ul><li>AD</li></ul>
+          <ul><li>AS</li></ul>
+      `;
+    } else if (eyesAbnormal) {
+      return `
+        <li>Fluorescein stain</li>
+          <ul><li>OD</li></ul>
+          <ul><li>OS</li></ul>
+        <li>Schirmer tear test</li>
+          <ul><li>OD</li></ul>
+          <ul><li>OS</li></ul>
+      `;
+    }  else {
+      return `
+        <li> </li>
+      `;
+    }
+  }
+
+  const generateAssessmentsText = () => {
+    if (abnormalities.length != 0) {
+      if (eyesAbnormal) {
+        return `
+          <li>Corneal ulcer</li>
+          <li>Conjunctivitis</li>
+        `;
+      } else {
+        return `
+          <li></li>
+        `;
+      }
+    } else {
+      return `
+        <li>Apparently healthy!</li>
+      `;
+    }
+  }
+
   const generatePlanText = () => {
+    let sickPlanHtml = ``;
     if (visitType === "Wellness") {
       if (animal === "Dog") {
         return `
@@ -122,12 +194,32 @@ const TemplateGenerator: React.FC = () => {
         `;
       }
     }
-    return `
-      <li>Discussed above PE findings with owner</li>
-      <li>Plan for today:</li>
-        <ul><li> </li></ul>
-      <li>Owner agrees with above plan and has no questions at this time.</li>
-    `;
+    if (earsAbnormal) {
+      return `
+        <li>Discussed above PE findings with owner</li>
+        <li>Discussed with owner otitis externa. Recommend ear cytology for further evaluation.</li>
+        <li>Discussed with owner likely underlying allergies - if ear infections re-occur or if skin issues develop will plan to discuss in more detail</li>
+        <li>Plan for today:</li>
+          <ul><li> </li></ul>
+        <li>Owner agrees with above plan and has no questions at this time.</li>
+      `;
+    } else if (eyesAbnormal) {
+      return `
+        <li>Discussed above PE findings with owner</li>
+        <li>Discussed eye findings with owner – recommend fluorescein stain to evaluate for corneal ulcer.</li>
+        <li>Recommend Schirmer tear test to evaluate tear production given PE findings. </li>
+        <li>Plan for today:</li>
+          <ul><li> </li></ul>
+        <li>Owner agrees with above plan and has no questions at this time.</li>
+      `;
+    } else {
+      return `
+        <li>Discussed above PE findings with owner</li>
+        <li>Plan for today:</li>
+          <ul><li> </li></ul>
+        <li>Owner agrees with above plan and has no questions at this time.</li>
+      `;
+    }
   };
 
   const templateHTML = `
@@ -140,10 +232,10 @@ const TemplateGenerator: React.FC = () => {
     </ul>
     
     <p><strong>DIAGNOSTICS</strong></p>
-    <ul><li> </li></ul>
+    <ul>${generateDiagnosticsText()}</ul>
     
     <p><strong>ASSESSMENT</strong></p>
-    <ul><li>Apparently healthy!</li></ul>
+    <ul>${generateAssessmentsText()}</ul>
     
     <p><strong>PLAN</strong></p>
     <ul>${generatePlanText()}</ul>
