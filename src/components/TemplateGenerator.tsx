@@ -177,7 +177,6 @@ const TemplateGenerator: React.FC = () => {
           <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend simparica and discussed with owners difference between simparica and simparica trio. Owner elects for ***simparica OR simparica trio with HWT today.</li>
           <li>Discussed activity and mobility – no changes noted by owner and no signs of arthritis.</li>
           <li>Discussed vaccines – today due for ***</li>
-          <li>Discussed leptospirosis vaccine – now recommended as core vaccine by AAHA due to risks associated with disease and zoonotic risk. Recommend 1st lepto vaccine today and booster in 3-4 weeks. Discussed risks of lepto vaccine with owners.</li>
           <li>Plan for today:</li>
             <ul><li> </li></ul>
           <li>Owner agrees with above plan and has no questions at this time.</li>
@@ -230,7 +229,7 @@ const TemplateGenerator: React.FC = () => {
     <p><strong>OBJECTIVE</strong></p>
     <ul>
       <li>Subjective Assessment: ${subjectiveAssessment}</li>
-      <li>Ease of Examination (5/5 is the easiest): ${easeOfExamination}</li>
+      <li>Ease of Examination (5/5 is the easiest): ${easeOfExamination}/5</li>
       <li>Temperament: ${temperament}</li>
       ${generateObjectiveText()}
     </ul>
