@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/vetnote.github.io/static/css/main.5e335cae.css",
-    "main.js": "/vetnote.github.io/static/js/main.2e0f9c3f.js",
+    "main.js": "/vetnote.github.io/static/js/main.0d7beb77.js",
     "index.html": "/vetnote.github.io/index.html",
     "main.5e335cae.css.map": "/vetnote.github.io/static/css/main.5e335cae.css.map",
-    "main.2e0f9c3f.js.map": "/vetnote.github.io/static/js/main.2e0f9c3f.js.map"
+    "main.0d7beb77.js.map": "/vetnote.github.io/static/js/main.0d7beb77.js.map"
   },
   "entrypoints": [
     "static/css/main.5e335cae.css",
-    "static/js/main.2e0f9c3f.js"
+    "static/js/main.0d7beb77.js"
   ]
 }
