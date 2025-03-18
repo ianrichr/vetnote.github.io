@@ -14,7 +14,7 @@ const SubjectiveAssessmentSelector: React.FC<SubjectiveAssessmentSelectorProps> 
       <h2>Subjective Assessment</h2>
       <select value={value} onChange={(e) => onChange(e.target.value)}>
         <option value="BAR">BAR</option>
-        <option value="ADR">ADR</option>
+        <option value="QAR">QAR</option>
       </select>
     </div>
   );

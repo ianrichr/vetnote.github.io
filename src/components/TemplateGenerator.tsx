@@ -15,6 +15,7 @@ const TemplateGenerator: React.FC = () => {
   const [temperament, setTemperament] = useState("Well-behaved");
   const [copySuccess, setCopySuccess] = useState(false);
   const templateRef = useRef<HTMLDivElement>(null);
+  let oralNasalThroatAbnormal = false
   let earsAbnormal = false;
   let eyesAbnormal = false;
 
@@ -43,7 +44,15 @@ const TemplateGenerator: React.FC = () => {
     ];
 
     return systems.map((system) => {
-      if (system === "Ears") {
+      if (system === "Oral-Nasal-Throat") {
+        if (abnormalities.includes(system)) {
+          oralNasalThroatAbnormal = true;
+          return `<li>Oral-Nasal-Throat: Abnormal</li>`;
+        } else {
+          return `<li>Oral-Nasal-Throat: Normal</li>`;
+        }
+      }
+      else if (system === "Ears") {
         if (abnormalities.includes(system)) {
           earsAbnormal = true;
           return `
@@ -144,52 +153,94 @@ const TemplateGenerator: React.FC = () => {
   }
 
   const generateAssessmentsText = () => {
+    let assessmentsHtml = ``;
+    let healthyHtml = `<li>Apparently healthy!</li>`;
+    let oralNasalThroatHtml = ``;
+    let earsAbnormalHtml = ``;
+    let eyesAbnormalHtml = ``;
     if (abnormalities.length != 0) {
+      healthyHtml = `
+        <li></li>
+      `;
+      if (oralNasalThroatAbnormal) {
+        healthyHtml = ``;
+        oralNasalThroatHtml = `
+          <li>Dental disease</li>
+        `;
+      }
       if (earsAbnormal) {
-        return `
+        healthyHtml = ``;
+        earsAbnormalHtml = `
           <li>Otitis externa</li>
         `;
-      } else if (eyesAbnormal) {
-        return `
+      }
+      if (eyesAbnormal) {
+        healthyHtml = ``;
+        eyesAbnormalHtml = `
           <li>Corneal ulcer</li>
           <li>Conjunctivitis</li>
         `;
-      } else {
-        return `
-          <li></li>
-        `;
       }
-    } else {
-      return `
-        <li>Apparently healthy!</li>
-      `;
     }
+    assessmentsHtml = `
+      ${healthyHtml}
+      ${oralNasalThroatHtml}
+      ${earsAbnormalHtml}
+      ${eyesAbnormalHtml}
+    `;
+    return assessmentsHtml;
   }
 
   const generatePlanText = () => {
-    let sickPlanHtml = ``;
+    let planHtml = ``;
+    let oralNasalThroatHtml = ``;
+    let earsAbnormalHtml = ``;
+    let eyesAbnormalHtml = ``;
+    if (oralNasalThroatAbnormal) {
+      oralNasalThroatHtml = `
+        <li>Discussed dental disease – recommend dental under GA at this time for COHAT. Discussed risks with GA and ways practice minimizes risk including pre-op bloodwork to assess underlying organ function. Dental estimate sent with owner lvl ***</li>
+      `;
+    }
+    if (earsAbnormal) {
+      earsAbnormalHtml = `
+        <li>Discussed with owner otitis externa. Recommend ear cytology for further evaluation.</li>
+        <li>Discussed with owner likely underlying allergies - if ear infections re-occur or if skin issues develop will plan to discuss in more detail</li>
+      `;
+    }
+    if (eyesAbnormal) {
+      eyesAbnormalHtml = `
+        <li>Discussed eye findings with owner – recommend fluorescein stain to evaluate for corneal ulcer.</li>
+        <li>Recommend Schirmer tear test to evaluate tear production given PE findings. </li>
+      `;
+    }
     if (visitType === "Wellness") {
       if (animal === "Dog") {
-        return `
+        planHtml = `
           <li>Discussed above PE findings with owner</li>
+          ${oralNasalThroatHtml}
+          ${earsAbnormalHtml}
+          ${eyesAbnormalHtml}
           <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>
-          <li>Discussed diet – discussed risks with grain free and raw diets – do not recommend!</li>
-          <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend simparica and discussed with owners difference between simparica and simparica trio. Owner elects for ***simparica OR simparica trio with HWT today.</li>
+          <li>Discussed diet – discussed risks with grain free (heart disease) and raw diets (e.coli, salmonella, and avian influenza) – do not recommend!</li>
+          <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend simparica trio at this time due to HW prevention. Discussed with owner HW not as prevalent in WA state but may be seeing more cases as climate becomes warmer – recommend monthly prevention at this time. HWT ***. Estimate provided.</li>
           <li>Discussed activity and mobility – no changes noted by owner and no signs of arthritis.</li>
-          <li>Discussed vaccines – today due for ***</li>
+          <li>Discussed vaccines – today due for ***. Discussed vaccine reactions with owner.</li>
           <li>Plan for today:</li>
             <ul><li> </li></ul>
           <li>Owner agrees with above plan and has no questions at this time.</li>
         `;
       } else if (animal === "Cat") {
-        return `
+        planHtml = `
+          ${oralNasalThroatHtml}
+          ${earsAbnormalHtml}
+          ${eyesAbnormalHtml}
           <li>Discussed above PE findings with owner</li>
           <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>
-          <li>Discussed diet – discussed potential risks with grain free diets and cats – do not recommend at this time. Discussed risks with raw diets (especially poultry) and raw milk – increased risk for Avian influenza – do not recommend any raw diet including raw milk for cats.</li>
+          <li>*Discussed diet - discussed risks with raw diets (especially poultry) and raw milk – increased risk for Avian influenza – do not recommend any raw food including freeze dried poultry products.</li>
           <li>Indoor/outdoor status – discussed risks associated with FIV/FeLV and avian influenza with owner.</li>
           <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend revolution.</li>
           <li>Discussed activity and mobility – no changes in jumping on couches/bed or using litterbox per owner report.</li>
-          <li>Discussed vaccines – today due for ***</li>
+          <li>Discussed vaccines – today due for ***. Discussed with owner vaccine reactions and risk for injection site sarcoma in cats.</li>
           <li>Discussed FeLV vaccine – recommend for all cats under 1 yr of age and then for indoor/outdoor cats. ***Recommend FIV/FeLV test today and if negative recommend FeLV vax today and booster in 3-4 weeks. ***Recommend annual FeLV booster.</li>
           <li>Plan for today:</li>
             <ul><li> </li></ul>
@@ -197,32 +248,18 @@ const TemplateGenerator: React.FC = () => {
         `;
       }
     }
-    if (earsAbnormal) {
-      return `
+    else if (visitType === "Sick") {
+      planHtml = `
         <li>Discussed above PE findings with owner</li>
-        <li>Discussed with owner otitis externa. Recommend ear cytology for further evaluation.</li>
-        <li>Discussed with owner likely underlying allergies - if ear infections re-occur or if skin issues develop will plan to discuss in more detail</li>
-        <li>Plan for today:</li>
-          <ul><li> </li></ul>
-        <li>Owner agrees with above plan and has no questions at this time.</li>
-      `;
-    } else if (eyesAbnormal) {
-      return `
-        <li>Discussed above PE findings with owner</li>
-        <li>Discussed eye findings with owner – recommend fluorescein stain to evaluate for corneal ulcer.</li>
-        <li>Recommend Schirmer tear test to evaluate tear production given PE findings. </li>
-        <li>Plan for today:</li>
-          <ul><li> </li></ul>
-        <li>Owner agrees with above plan and has no questions at this time.</li>
-      `;
-    } else {
-      return `
-        <li>Discussed above PE findings with owner</li>
+        ${oralNasalThroatHtml}
+        ${earsAbnormalHtml}
+        ${eyesAbnormalHtml}
         <li>Plan for today:</li>
           <ul><li> </li></ul>
         <li>Owner agrees with above plan and has no questions at this time.</li>
       `;
     }
+    return planHtml;
   };
 
   const templateHTML = `
