@@ -193,13 +193,19 @@ const TemplateGenerator: React.FC = () => {
 
   const generatePlanText = () => {
     let planHtml = ``;
-    let oralNasalThroatHtml = ``;
+    let oralNasalThroatHtml = `<li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>`;
     let earsAbnormalHtml = ``;
     let eyesAbnormalHtml = ``;
     if (oralNasalThroatAbnormal) {
       oralNasalThroatHtml = `
         <li>Discussed dental disease – recommend dental under GA at this time for COHAT. Discussed risks with GA and ways practice minimizes risk including pre-op bloodwork to assess underlying organ function. Dental estimate sent with owner lvl ***</li>
       `;
+    } else if (visitType == "Wellness") {
+      oralNasalThroatHtml = `
+        <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>
+      `;
+    } else {
+      oralNasalThroatHtml = ``;
     }
     if (earsAbnormal) {
       earsAbnormalHtml = `
@@ -220,7 +226,6 @@ const TemplateGenerator: React.FC = () => {
           ${oralNasalThroatHtml}
           ${earsAbnormalHtml}
           ${eyesAbnormalHtml}
-          <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>
           <li>Discussed diet – discussed risks with grain free (heart disease) and raw diets (e.coli, salmonella, and avian influenza) – do not recommend!</li>
           <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend simparica trio at this time due to HW prevention. Discussed with owner HW not as prevalent in WA state but may be seeing more cases as climate becomes warmer – recommend monthly prevention at this time. HWT ***. Estimate provided.</li>
           <li>Discussed activity and mobility – no changes noted by owner and no signs of arthritis.</li>
@@ -231,11 +236,10 @@ const TemplateGenerator: React.FC = () => {
         `;
       } else if (animal === "Cat") {
         planHtml = `
+          <li>Discussed above PE findings with owner</li>
           ${oralNasalThroatHtml}
           ${earsAbnormalHtml}
           ${eyesAbnormalHtml}
-          <li>Discussed above PE findings with owner</li>
-          <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>
           <li>*Discussed diet - discussed risks with raw diets (especially poultry) and raw milk – increased risk for Avian influenza – do not recommend any raw food including freeze dried poultry products.</li>
           <li>Indoor/outdoor status – discussed risks associated with FIV/FeLV and avian influenza with owner.</li>
           <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend revolution.</li>
@@ -270,16 +274,16 @@ const TemplateGenerator: React.FC = () => {
       <li>Temperament: ${temperament}</li>
       ${generateObjectiveText()}
     </ul>
-    
+    <br />
     <p><strong>DIAGNOSTICS</strong></p>
     <ul>${generateDiagnosticsText()}</ul>
-    
+    <br />
     <p><strong>ASSESSMENT</strong></p>
     <ul>${generateAssessmentsText()}</ul>
-    
+    <br />
     <p><strong>PLAN</strong></p>
     <ul>${generatePlanText()}</ul>
-
+    <br />
     <p>KSW</p>
   `;
 
