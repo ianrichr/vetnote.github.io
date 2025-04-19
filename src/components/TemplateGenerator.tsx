@@ -10,6 +10,8 @@ const TemplateGenerator: React.FC = () => {
   const [animal, setAnimal] = useState("Dog");
   const [visitType, setVisitType] = useState("Wellness");
   const [abnormalities, setAbnormalities] = useState<string[]>([]);
+  const [murmurGrade, setMurmurGrade] = useState(3);
+  const [murmurSide, setMurmurSide] = useState<string | "">("");
   const [easeOfExamination, setEaseOfExamination] = useState(5);
   const [subjectiveAssessment, setSubjectiveAssessment] = useState("BAR");
   const [temperament, setTemperament] = useState("Well-behaved");
@@ -18,6 +20,7 @@ const TemplateGenerator: React.FC = () => {
   let oralNasalThroatAbnormal = false
   let earsAbnormal = false;
   let eyesAbnormal = false;
+  let murmurAbnormal = false;
 
   const toggleAbnormality = (system: string) => {
     setAbnormalities((prev) =>
@@ -33,6 +36,7 @@ const TemplateGenerator: React.FC = () => {
       "Ears",
       "Eyes",
       "Cardiovascular",
+      "Murmur",
       "Respiratory",
       "Abdominal",
       "Genitourinary",
@@ -65,7 +69,8 @@ const TemplateGenerator: React.FC = () => {
         } else {
           return `<li>Ears: Normal</li>`;
         }
-      } else if (system === "Eyes") {
+      } 
+      else if (system === "Eyes") {
         if (abnormalities.includes(system)) {
           eyesAbnormal = true;
           return `
@@ -81,11 +86,17 @@ const TemplateGenerator: React.FC = () => {
       }
       else if (system === "Cardiovascular") {
         if (abnormalities.includes(system)) {
-          return `<li>Cardiovascular: Abnormal</li>`;
+          if (abnormalities.includes("Murmur")) {
+            murmurAbnormal = true;
+            return `<li>Cardiovascular: Abnormal. ${murmurSide} Grade: ${murmurGrade}</li>`;
+          } else {
+            return `<li>Cardiovascular: Abnormal</li>`;
+          }
         } else {
           return `<li>Cardiovascular: Normal rate and rhythm; no murmur auscultated</li>`;
         }
-      } else if (system === "Respiratory") {
+      } 
+      else if (system === "Respiratory") {
         if (abnormalities.includes(system)) {
           return `<li>Respiratory: Abnormal</li>`;
         } else {
@@ -196,6 +207,8 @@ const TemplateGenerator: React.FC = () => {
     let oralNasalThroatHtml = `<li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>`;
     let earsAbnormalHtml = ``;
     let eyesAbnormalHtml = ``;
+    let murmurAbnormalHtml = ``;
+
     if (oralNasalThroatAbnormal) {
       oralNasalThroatHtml = `
         <li>Discussed dental disease – recommend dental under GA at this time for COHAT. Discussed risks with GA and ways practice minimizes risk including pre-op bloodwork to assess underlying organ function. Dental estimate sent with owner lvl ***</li>
@@ -219,6 +232,20 @@ const TemplateGenerator: React.FC = () => {
         <li>Recommend Schirmer tear test to evaluate tear production given PE findings. </li>
       `;
     }
+    if (murmurAbnormal) {
+      murmurAbnormalHtml = `
+        <li>Discussed new onset heart murmur with owner including causes (as above.)</li>
+        <li>
+          Discussed with owner diagnostics to evaluate for heart disease. Recommend
+          echocardiogram with mobile cardiologist as gold standard to evaluate heart function
+          and assess for heart disease. Owner verbally quoted $800 dollars and knows they
+          need to put down $600 dollar deposit. Also, briefly discussed thoracic radiographs to
+          evaluate for changes in heart size as well as assess lungs. Discussed with owners
+          limitations of thoracic radiographs (unable to determine heart function). Estimate
+          provided – owner to consider.
+        </li>
+      `
+    }
     if (visitType === "Wellness") {
       if (animal === "Dog") {
         planHtml = `
@@ -226,6 +253,7 @@ const TemplateGenerator: React.FC = () => {
           ${oralNasalThroatHtml}
           ${earsAbnormalHtml}
           ${eyesAbnormalHtml}
+          ${murmurAbnormalHtml}
           <li>Discussed diet – discussed risks with grain free (heart disease) and raw diets (e.coli, salmonella, and avian influenza) – do not recommend!</li>
           <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend simparica trio at this time due to HW prevention. Discussed with owner HW not as prevalent in WA state but may be seeing more cases as climate becomes warmer – recommend monthly prevention at this time. HWT ***. Estimate provided.</li>
           <li>Discussed activity and mobility – no changes noted by owner and no signs of arthritis.</li>
@@ -240,6 +268,7 @@ const TemplateGenerator: React.FC = () => {
           ${oralNasalThroatHtml}
           ${earsAbnormalHtml}
           ${eyesAbnormalHtml}
+          ${murmurAbnormalHtml}
           <li>*Discussed diet - discussed risks with raw diets (especially poultry) and raw milk – increased risk for Avian influenza – do not recommend any raw food including freeze dried poultry products.</li>
           <li>Indoor/outdoor status – discussed risks associated with FIV/FeLV and avian influenza with owner.</li>
           <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend revolution.</li>
@@ -258,6 +287,7 @@ const TemplateGenerator: React.FC = () => {
         ${oralNasalThroatHtml}
         ${earsAbnormalHtml}
         ${eyesAbnormalHtml}
+        ${murmurAbnormalHtml}
         <li>Plan for today:</li>
           <ul><li> </li></ul>
         <li>Owner agrees with above plan and has no questions at this time.</li>
@@ -309,7 +339,14 @@ const TemplateGenerator: React.FC = () => {
         <SubjectiveAssessmentSelector value={subjectiveAssessment} onChange={setSubjectiveAssessment} />
         <EaseOfExaminationSelector value={easeOfExamination} onChange={setEaseOfExamination} />
         <TemperamentSelector value={temperament} onChange={setTemperament} />
-        <AbnormalitiesSelector abnormalities={abnormalities} toggle={toggleAbnormality} />
+        <AbnormalitiesSelector 
+          abnormalities={abnormalities}
+          toggle={toggleAbnormality}
+          murmurGrade={murmurGrade}
+          setMurmurGrade={setMurmurGrade}
+          murmurSide={murmurSide}
+          setMurmurSide={setMurmurSide}
+        />
       </div>
       <div style={{ width: "55%", textAlign: "left" }}>
         <h2>Generated Template</h2>
