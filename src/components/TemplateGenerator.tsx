@@ -36,7 +36,6 @@ const TemplateGenerator: React.FC = () => {
       "Ears",
       "Eyes",
       "Cardiovascular",
-      "Murmur",
       "Respiratory",
       "Abdominal",
       "Genitourinary",
@@ -88,7 +87,7 @@ const TemplateGenerator: React.FC = () => {
         if (abnormalities.includes(system)) {
           if (abnormalities.includes("Murmur")) {
             murmurAbnormal = true;
-            return `<li>Cardiovascular: Abnormal. ${murmurSide} Grade: ${murmurGrade}</li>`;
+            return `<li>Cardiovascular: Abnormal - grade ${murmurGrade}/6 ${murmurSide} heart murmur</li>`;
           } else {
             return `<li>Cardiovascular: Abnormal</li>`;
           }

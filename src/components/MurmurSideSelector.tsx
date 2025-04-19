@@ -20,8 +20,8 @@ const MurmurSideSelector: React.FC<MurmurSideSelectorProps> = ({ value, onChange
         <input
           type="radio"
           name="murmur-side"
-          checked={value === "Left-sided"}
-          onChange={() => handleChange("Left-sided")}
+          checked={value === "left-sided"}
+          onChange={() => handleChange("left-sided")}
         />
         Left-sided
       </label>
@@ -29,8 +29,8 @@ const MurmurSideSelector: React.FC<MurmurSideSelectorProps> = ({ value, onChange
         <input
           type="radio"
           name="murmur-side"
-          checked={value === "Right-sided"}
-          onChange={() => handleChange("Right-sided")}
+          checked={value === "right-sided"}
+          onChange={() => handleChange("right-sided")}
         />
         Right-sided
       </label>
