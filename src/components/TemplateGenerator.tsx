@@ -51,6 +51,8 @@ const TemplateGenerator: React.FC = () => {
         if (abnormalities.includes(system)) {
           oralNasalThroatAbnormal = true;
           return `<li>Oral-Nasal-Throat: Abnormal</li>`;
+        } else if (visitType === "Puppy" || visitType === "Kitten") {
+          return `<li>Oral-Nasal-Throat: Normal – deciduous teeth still present; no cleft palate</li>`;
         } else {
           return `<li>Oral-Nasal-Throat: Normal</li>`;
         }
@@ -104,6 +106,8 @@ const TemplateGenerator: React.FC = () => {
       } else if (system === "Abdominal") {
         if (abnormalities.includes(system)) {
           return `<li>Abdominal: Abnormal</li>`;
+        } else if (visitType === "Puppy" || visitType === "Kitten") {
+          return `<li>Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia</li>`;
         } else {
           return `<li>Abdominal: Normal - soft and non-tender on palpation</li>`;
         }
@@ -140,14 +144,23 @@ const TemplateGenerator: React.FC = () => {
   };
 
   const generateDiagnosticsText = () => {
+    let diagnosticsHtml = ``;
+    let emptyDiagnosticsHtml = `<li> </li>`;
+    let earDiagnosticsHtml = ``;
+    let eyesDiagnosticsHtml = ``;
+    let puppyKittenDiagnosticsHtml = ``;
+
     if (earsAbnormal) {
-      return `
+      emptyDiagnosticsHtml = ``;
+      earDiagnosticsHtml = `
         <li>Ear cytology</li>
           <ul><li>AD</li></ul>
           <ul><li>AS</li></ul>
       `;
-    } else if (eyesAbnormal) {
-      return `
+    } 
+    if (eyesAbnormal) {
+      emptyDiagnosticsHtml = ``;
+      eyesDiagnosticsHtml = `
         <li>Fluorescein stain</li>
           <ul><li>OD</li></ul>
           <ul><li>OS</li></ul>
@@ -155,16 +168,29 @@ const TemplateGenerator: React.FC = () => {
           <ul><li>OD</li></ul>
           <ul><li>OS</li></ul>
       `;
-    }  else {
-      return `
-        <li> </li>
-      `;
     }
+    if (visitType === "Puppy" || visitType === "Kitten") {
+      emptyDiagnosticsHtml = ``;
+      puppyKittenDiagnosticsHtml = `<li>Fecal ova and parasites - </li>`;
+    }
+
+    diagnosticsHtml = `
+      ${emptyDiagnosticsHtml}
+      ${earDiagnosticsHtml}
+      ${eyesDiagnosticsHtml}
+      ${puppyKittenDiagnosticsHtml}
+    `
+    return diagnosticsHtml;
   }
 
   const generateAssessmentsText = () => {
     let assessmentsHtml = ``;
-    let healthyHtml = `<li>Apparently healthy!</li>`;
+    let healthyHtml = "<li>Apparently healthy!</li>";
+    if (visitType === "Puppy") {
+      healthyHtml = "<li>Apparently healthy puppy!</li>";
+    } else if (visitType === "Kitten") {
+      healthyHtml = "<li>Apparently healthy kitten!</li>";
+    }
     let oralNasalThroatHtml = ``;
     let earsAbnormalHtml = ``;
     let eyesAbnormalHtml = ``;
@@ -207,6 +233,8 @@ const TemplateGenerator: React.FC = () => {
     let earsAbnormalHtml = ``;
     let eyesAbnormalHtml = ``;
     let murmurAbnormalHtml = ``;
+    let puppyPlanHtml = ``;
+    let kittenPlanHtml = ``;
 
     if (oralNasalThroatAbnormal) {
       oralNasalThroatHtml = `
@@ -292,6 +320,42 @@ const TemplateGenerator: React.FC = () => {
         <li>Owner agrees with above plan and has no questions at this time.</li>
       `;
     }
+    else if (visitType === "Puppy") {
+      planHtml = `
+        <li>Discussed above PE findings with owner</li>
+        ${oralNasalThroatHtml}
+        ${earsAbnormalHtml}
+        ${eyesAbnormalHtml}
+        ${murmurAbnormalHtml}
+        <li>Discussed diet – recommend continuing puppy diet until at least 1 yr of age. Discussed risks with grain free (heart disease) and raw diets (e. coli, salmonella, and avian influenza) – do not recommend for future diets!</li>
+        <li>Discussed parasite prevention – recommend fecal to lab to assess for parasites. Recommend monthly flea/tick prevention year round. Recommend starting on Simparica Trio today and continuing monthly. HWT due at 6 months of age.</li>
+        <li>Discussed normal puppy behaviors and training – educated owner on training including crate and potty training.</li>
+        <li>Discussed common toxins with owner including chocolate, grapes, raisins, and xylitol.</li>
+        <li>Discussed vaccines with owner including core (rabies, DHPP, and leptospirosis) and lifestyle (Bordetella and canine influenza vaccine).</li>
+        <li>Discussed neutering/spaying – recommend at ***. Discussed risks with procedure and GA with owner. Pre-op bloodwork due before procedure.</li>
+        <li>Plan for today:</li>
+          <ul><li> </li></ul>
+        <li>Owner agrees with above plan and has no questions at this time.</li>
+      `;
+    }
+    else if (visitType === "Kitten") {
+      planHtml = `
+        <li>Discussed above PE findings with owner</li>
+        ${oralNasalThroatHtml}
+        ${earsAbnormalHtml}
+        ${eyesAbnormalHtml}
+        ${murmurAbnormalHtml}
+        <li>Discussed diet – recommend continuing kitten diet until 1 yr of age. Discussed risks with raw diets (e. coli, salmonella, and avian influenza) – do not recommend for future diets! Discussed extra risks of avian influenza with raw chicken, eggs, and milk products – do not recommend. </li>
+        <li>Discussed parasite prevention – recommend fecal to lab to assess for parasites. Recommend monthly flea/tick prevention year-round. Recommend starting on revolution and continuing monthly. </li>
+        <li>Discussed normal kitten behaviors and environmental enrichment – Ohio State Indoor Initiative handout sent with owner. </li>
+        <li>Discussed common plant toxins including lilies and poinsettias. Gave owner information for ASPCA for plant toxicities.</li>
+        <li>Discussed vaccines with owner (rabies, FVRCP, and FeLV). Recommend FeLV for all kittens under 1 year of age and then annually for all indoor/outdoor cats. </li>
+        <li>Discussed neutering/spaying – recommend at 6 months of age. Discussed risks with procedure and GA with owner. Pre-op bloodwork due before procedure.</li>
+        <li>Plan for today:</li>
+          <ul><li> </li></ul>
+        <li>Owner agrees with above plan and has no questions at this time.</li>
+      `;
+    }
     return planHtml;
   };
 
@@ -334,7 +398,7 @@ const TemplateGenerator: React.FC = () => {
     <div style={{ display: "flex", justifyContent: "space-between", gap: "20px" }}>
       <div style={{ width: "40%" }}>
         <AnimalSelector value={animal} onChange={setAnimal} />
-        <VisitTypeSelector value={visitType} onChange={setVisitType} />
+        <VisitTypeSelector value={visitType} onChange={setVisitType} animal={animal}/>
         <SubjectiveAssessmentSelector value={subjectiveAssessment} onChange={setSubjectiveAssessment} />
         <EaseOfExaminationSelector value={easeOfExamination} onChange={setEaseOfExamination} />
         <TemperamentSelector value={temperament} onChange={setTemperament} />
