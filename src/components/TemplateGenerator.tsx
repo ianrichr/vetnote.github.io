@@ -238,12 +238,10 @@ const TemplateGenerator: React.FC = () => {
 
   const generatePlanText = () => {
     let planHtml = ``;
-    let oralNasalThroatHtml = `<li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>`;
+    let oralNasalThroatHtml = ``;
     let earsAbnormalHtml = ``;
     let eyesAbnormalHtml = ``;
     let murmurAbnormalHtml = ``;
-    let puppyPlanHtml = ``;
-    let kittenPlanHtml = ``;
 
     if (oralNasalThroatAbnormal) {
       oralNasalThroatHtml = `
@@ -251,7 +249,7 @@ const TemplateGenerator: React.FC = () => {
       `;
     } else if (visitType == "Wellness") {
       oralNasalThroatHtml = `
-        <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Discussed with owner to start slow and build up to daily brushing (let patient lick toothpaste off toothbrush x few days, then touch toothbrush to teeth x few days, then try brushing)</li>
+        <li>Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Alternatively, recommend any VOHC approved dental products for plaque removal.</li>
       `;
     } else {
       oralNasalThroatHtml = ``;
@@ -270,16 +268,8 @@ const TemplateGenerator: React.FC = () => {
     }
     if (murmurAbnormal) {
       murmurAbnormalHtml = `
-        <li>Discussed new onset heart murmur with owner including causes (as above.)</li>
-        <li>
-          Discussed with owner diagnostics to evaluate for heart disease. Recommend
-          echocardiogram with mobile cardiologist as gold standard to evaluate heart function
-          and assess for heart disease. Owner verbally quoted $800 dollars and knows they
-          need to put down $600 dollar deposit. Also, briefly discussed thoracic radiographs to
-          evaluate for changes in heart size as well as assess lungs. Discussed with owners
-          limitations of thoracic radiographs (unable to determine heart function). Estimate
-          provided – owner to consider.
-        </li>
+        <li>Discussed new onset heart murmur with owner including causes (as above) and diagnostics to evaluate further.</li>
+        <li>Discussed gold standard is an echocardiogram with cardiologist to evaluate heart structure and function to assess for heart disease. Owner verbally quoted $800 dollars for mobile cardiologist. Also, briefly discussed thoracic radiographs to evaluate for changes in heart size as well as assess lungs. Discussed limitations of thoracic radiographs (unable to determine heart function). Estimate provided – owner to consider.</li>
       `
     }
     if (visitType === "Wellness") {
@@ -293,7 +283,7 @@ const TemplateGenerator: React.FC = () => {
           <li>Discussed diet – discussed risks with grain free (heart disease) and raw diets (e.coli, salmonella, and avian influenza) – do not recommend!</li>
           <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend simparica trio at this time due to HW prevention. Discussed with owner HW not as prevalent in WA state but may be seeing more cases as climate becomes warmer – recommend monthly prevention at this time. HWT ***. Estimate provided.</li>
           <li>Discussed activity and mobility – no changes noted by owner and no signs of arthritis.</li>
-          <li>Discussed vaccines – today due for ***. Discussed vaccine reactions with owner.</li>
+          <li>Discussed vaccines – today due for ***. Discussed canine influenza vaccine. Discussed vaccine reactions with owner.</li>
           <li>Plan for today:</li>
             <ul><li> </li></ul>
           <li>Owner agrees with above plan and has no questions at this time.</li>
@@ -305,7 +295,7 @@ const TemplateGenerator: React.FC = () => {
           ${earsAbnormalHtml}
           ${eyesAbnormalHtml}
           ${murmurAbnormalHtml}
-          <li>*Discussed diet - discussed risks with raw diets (especially poultry) and raw milk – increased risk for Avian influenza – do not recommend any raw food including freeze dried poultry products.</li>
+          <li>Discussed diet - discussed risks with raw diets (especially poultry) and raw milk – increased risk for Avian influenza – do not recommend any raw food including freeze dried poultry products.</li>
           <li>Indoor/outdoor status – discussed risks associated with FIV/FeLV and avian influenza with owner.</li>
           <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend revolution.</li>
           <li>Discussed activity and mobility – no changes in jumping on couches/bed or using litterbox per owner report.</li>
