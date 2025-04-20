@@ -194,6 +194,8 @@ const TemplateGenerator: React.FC = () => {
     let oralNasalThroatHtml = ``;
     let earsAbnormalHtml = ``;
     let eyesAbnormalHtml = ``;
+    let murmurAbnormalHtml = ``;
+
     if (abnormalities.length != 0) {
       healthyHtml = `
         <li></li>
@@ -217,12 +219,19 @@ const TemplateGenerator: React.FC = () => {
           <li>Conjunctivitis</li>
         `;
       }
+      if (murmurAbnormal) {
+        healthyHtml = ``;
+        murmurAbnormalHtml = `
+          <li>Heart murmur - pathological vs physiological</li>
+        `;
+      }
     }
     assessmentsHtml = `
       ${healthyHtml}
       ${oralNasalThroatHtml}
       ${earsAbnormalHtml}
       ${eyesAbnormalHtml}
+      ${murmurAbnormalHtml}
     `;
     return assessmentsHtml;
   }
