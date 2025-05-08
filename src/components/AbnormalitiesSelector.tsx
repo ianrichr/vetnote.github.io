@@ -63,7 +63,6 @@ const AbnormalitiesSelector: React.FC<AbnormalitiesSelectorProps> = ({
               {abnormalities.includes("Murmur") && (
                 <div style={{ marginLeft: "1.5em" }}>
                   <MurmurGradeSelector value={murmurGrade} onChange={setMurmurGrade} />
-                  <MurmurSideSelector value={murmurSide} onChange={setMurmurSide} />
                 </div>
               )}
             </div>
