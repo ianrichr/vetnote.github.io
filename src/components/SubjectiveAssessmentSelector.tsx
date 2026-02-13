@@ -11,8 +11,12 @@ const SubjectiveAssessmentSelector: React.FC<SubjectiveAssessmentSelectorProps> 
 }) => {
   return (
     <div>
-      <h2>Subjective Assessment</h2>
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
+      <h2 id="subjective-assessment-label">Subjective Assessment</h2>
+      <select 
+        value={value} 
+        onChange={(e) => onChange(e.target.value)}
+        aria-labelledby="subjective-assessment-label"
+      >
         <option value="BAR">BAR</option>
         <option value="QAR">QAR</option>
       </select>

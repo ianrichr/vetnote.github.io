@@ -11,13 +11,14 @@ const EaseOfExaminationSelector: React.FC<EaseOfExaminationSelectorProps> = ({
 }) => {
   return (
     <div>
-      <h2>Ease of Examination</h2>
+      <h2 id="ease-of-examination-label">Ease of Examination</h2>
       <input
         type="range"
         min={1}
         max={5}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
+        aria-labelledby="ease-of-examination-label"
       />
       <span>{value}/5</span>
     </div>
