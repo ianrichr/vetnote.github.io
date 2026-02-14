@@ -46,22 +46,53 @@ export const eyesConfig = {
     label: 'Eyes: Abnormal',
     details: ['OD', 'OS'],
   },
-  diagnostics: {
-    fluorescein: {
-      label: 'Fluorescein stain',
-      details: ['OD', 'OS'],
+  // Configuration-driven sub-options with RECURSIVE NESTING support!
+  subOptions: {
+    'Fluorescein Stain': {
+      diagnostics: {
+        label: 'Fluorescein stain',
+        details: ['OD', 'OS'],
+      },
+      // Nested sub-options for Fluorescein results
+      subOptions: {
+        'Corneal Ulcer': {
+          assessment: 'Corneal ulcer',
+        },
+      },
     },
-    schirmer: {
-      label: 'Schirmer tear test',
-      details: ['OD', 'OS'],
+    'STT': {
+      diagnostics: {
+        label: 'Schirmer tear test',
+        details: ['OD', 'OS'],
+      },
+      // Nested sub-options for Schirmer tear test results
+      subOptions: {
+        'Dry Eye': {
+          assessment: 'Keratoconjunctivitis sicca (dry eye)',
+        },
+      },
     },
-  },
-  assessment: {
-    conditions: ['Corneal ulcer', 'Conjunctivitis'],
+    'IOP': {
+      diagnostics: {
+        label: 'Intraocular pressure',
+        details: ['OD', 'OS'],
+      },
+      // Nested sub-options for IOP findings (as requested!)
+      subOptions: {
+        'Glaucoma': {
+          assessment: 'Glaucoma',
+          plan: 'Discussed glaucoma management including topical medications to reduce intraocular pressure. Recommend ophthalmology referral for ongoing monitoring.',
+        },
+      },
+    },
+    'Conjunctivitis': {
+      assessment: 'Conjunctivitis',
+    },
   },
   plan: {
-    discussion: 'Discussed eye findings with owner – recommend fluorescein stain to evaluate for corneal ulcer.',
-    schirmer: 'Recommend Schirmer tear test to evaluate tear production given PE findings.',
+    fluoresceinStain: 'Recommend fluorescein stain to evaluate for corneal ulcer.',
+    schirmerTearTest: 'Recommend Schirmer tear test to evaluate tear production.',
+    intraocularPressure: 'Recommend assessing IOP given PE findings.'
   },
 };
 
@@ -69,18 +100,20 @@ export const cardiovascularConfig = {
   normal: 'Cardiovascular: Normal rate and rhythm; no murmur auscultated',
   abnormal: {
     label: 'Cardiovascular: Abnormal',
-    withMurmur: (grade: number, side: string) =>
-      `Cardiovascular: Abnormal - grade ${grade}/6 ${side} heart murmur`,
   },
-  assessment: {
-    murmur: 'Heart murmur - pathological vs physiological',
-  },
-  plan: {
-    murmur: {
-      discussion:
+  // Configuration-driven sub-options
+  subOptions: {
+    'Murmur': {
+      // Murmur has additional grade/side parameters handled separately
+      requiresGrade: true,
+      requiresSide: true,
+      objectiveLabel: (grade: number, side: string) =>
+        `Cardiovascular: Abnormal - grade ${grade}/6 ${side} heart murmur`,
+      assessment: 'Heart murmur - pathological vs physiological',
+      plan: [
         'Discussed new onset heart murmur with owner including causes (as above) and diagnostics to evaluate further.',
-      echo:
         'Discussed gold standard is an echocardiogram with cardiologist to evaluate heart structure and function to assess for heart disease. Owner verbally quoted $800 dollars for mobile cardiologist. Also, briefly discussed thoracic radiographs to evaluate for changes in heart size as well as assess lungs. Discussed limitations of thoracic radiographs (unable to determine heart function). Estimate provided – owner to consider.',
+      ],
     },
   },
 };

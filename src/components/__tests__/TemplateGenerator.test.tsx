@@ -122,10 +122,10 @@ describe('TemplateGenerator - Baseline Tests', () => {
       expect(template).toContain('Eyes: Abnormal');
       expect(template).toContain('<li>OD</li>');
       expect(template).toContain('<li>OS</li>');
-      expect(template).toContain('Fluorescein stain');
-      expect(template).toContain('Schirmer tear test');
-      expect(template).toContain('Corneal ulcer');
-      expect(template).toContain('Conjunctivitis');
+      // Eye diagnostics/assessments now require explicit sub-option selection
+      // Plan text still shows automatically
+      expect(template).toContain('Discussed eye findings with owner');
+      expect(template).toContain('Recommend Schirmer tear test');
     });
 
     it('should generate correct template for dog with heart murmur', () => {
@@ -244,9 +244,10 @@ describe('TemplateGenerator - Baseline Tests', () => {
       expect(template).toContain('Ears: Abnormal');
       expect(template).toContain('Eyes: Abnormal');
       expect(template).toContain('Ear cytology');
-      expect(template).toContain('Fluorescein stain');
       expect(template).toContain('Otitis externa');
-      expect(template).toContain('Corneal ulcer');
+      // Eye diagnostics/assessments require explicit sub-option selection
+      // Plan text still shows automatically
+      expect(template).toContain('Discussed eye findings with owner');
     });
   });
 
@@ -264,9 +265,10 @@ describe('TemplateGenerator - Baseline Tests', () => {
       expect(template).toContain('Eyes: Abnormal');
       expect(template).toContain('Respiratory: Abnormal');
       expect(template).toContain('Ear cytology');
-      expect(template).toContain('Fluorescein stain');
       expect(template).toContain('Otitis externa');
-      expect(template).toContain('Corneal ulcer');
+      // Eye diagnostics/assessments require explicit sub-option selection
+      // Plan text still shows automatically
+      expect(template).toContain('Discussed eye findings with owner');
     });
   });
 

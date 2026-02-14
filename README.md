@@ -13,6 +13,8 @@ The application is deployed at: https://ianrichr.github.io/vetnote.github.io/
 - **Customizable Assessment**: Multiple subjective assessment and temperament options
 - **Body Systems**: Comprehensive coverage of all veterinary body systems
 - **Abnormality Tracking**: Easy selection of abnormal findings with automatic template adjustments
+- **Nested Sub-Options**: Infinitely nestable diagnostic tests and findings for detailed clinical documentation
+- **Configuration-Driven**: Add new template options by editing a single configuration file
 - **Copy to Clipboard**: One-click copying of generated notes
 
 ## Project Structure
@@ -116,13 +118,61 @@ This automatically:
 
 **Note**: You should never manually edit the `gh-pages` branch. It's automatically managed by the deployment script.
 
+## Configuration-Driven Architecture
+
+VetNote uses a powerful configuration-driven system that makes adding new template features incredibly simple. **See [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md) for detailed documentation.**
+
+### Quick Example: Adding Sub-Options
+
+To add new diagnostic options with findings (like IOP test with Glaucoma finding):
+
+```typescript
+// In src/config/systemTexts.ts
+export const eyesConfig = {
+  // ... existing config
+  subOptions: {
+    'IOP': {
+      diagnostics: {
+        label: 'Intraocular pressure',
+        details: ['OD', 'OS'],
+      },
+      // Nest findings under the diagnostic
+      subOptions: {
+        'Glaucoma': {
+          assessment: 'Glaucoma',
+          plan: 'Discussed glaucoma management...'
+        },
+        'Normal Pressure': {
+          assessment: 'Normal intraocular pressure'
+        }
+      }
+    }
+  }
+};
+```
+
+**That's it!** The UI checkboxes, state management, and template generation happen automatically.
+
+### Key Benefits
+
+- ✅ **One File Changes**: Add features by editing only `systemTexts.ts`
+- ✅ **Infinite Nesting**: Nest sub-options as deep as clinically meaningful
+- ✅ **Automatic UI**: Checkboxes render automatically
+- ✅ **Auto-Cleanup**: Unchecking parent options clears all child selections
+- ✅ **Type-Safe**: TypeScript catches configuration errors
+
+For comprehensive documentation on the configuration system, see **[CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md)**.
+
+---
+
 ## How to Modify Templates
 
 ### Adding New Text Content
 
 1. **For body system text**: Edit `src/config/systemTexts.ts`
    - Add new properties to the relevant system config
-   - Example: Adding new assessment text for ears
+   - Add sub-options with nested findings
+   - Example: See `eyesConfig` for nested diagnostic options
 
 2. **For plan/assessment text**: Edit `src/config/sectionTexts.ts`
    - Add new plan items for visit types

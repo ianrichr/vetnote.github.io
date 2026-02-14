@@ -30,6 +30,10 @@ export interface TemplateContext {
   easeOfExamination: number;
   temperament: string;
   abnormalities: string[];
+  // Path-based sub-options supporting infinite nesting
+  // Examples: { 'Eyes': ['IOP'], 'Eyes>IOP': ['Glaucoma'], 'Eyes>Fluorescein>Ulcer': ['Deep'] }
+  subOptions: Record<string, string[]>;
+  // Special parameters for specific sub-options
   murmurGrade: number;
   murmurSide: MurmurSide;
 }

@@ -12,6 +12,7 @@ const TemplateGenerator: React.FC = () => {
   const [animal, setAnimal] = useState("Dog");
   const [visitType, setVisitType] = useState("Wellness");
   const [abnormalities, setAbnormalities] = useState<string[]>([]);
+  const [subOptions, setSubOptions] = useState<Record<string, string[]>>({});
   const [murmurGrade, setMurmurGrade] = useState(3);
   const [murmurSide, setMurmurSide] = useState<string | "">("");
   const [easeOfExamination, setEaseOfExamination] = useState(5);
@@ -28,6 +29,33 @@ const TemplateGenerator: React.FC = () => {
     );
   };
 
+  const toggleSubOption = (parentPath: string, option: string) => {
+    setSubOptions((prev) => {
+      const pathOptions = prev[parentPath] || [];
+      const isCurrentlySelected = pathOptions.includes(option);
+      const newPathOptions = isCurrentlySelected
+        ? pathOptions.filter((item) => item !== option)
+        : [...pathOptions, option];
+      
+      const newSubOptions = {
+        ...prev,
+        [parentPath]: newPathOptions,
+      };
+
+      // If unchecking an option, recursively clear all child selections
+      if (isCurrentlySelected) {
+        const childPath = `${parentPath}>${option}`;
+        Object.keys(newSubOptions).forEach(key => {
+          if (key.startsWith(childPath)) {
+            delete newSubOptions[key];
+          }
+        });
+      }
+      
+      return newSubOptions;
+    });
+  };
+
   // Build template context from current state
   const context: TemplateContext = {
     animal: animal as 'Dog' | 'Cat',
@@ -36,6 +64,7 @@ const TemplateGenerator: React.FC = () => {
     easeOfExamination,
     temperament,
     abnormalities,
+    subOptions,
     murmurGrade,
     murmurSide: murmurSide as '' | 'left' | 'right' | 'bilateral',
   };
@@ -68,6 +97,8 @@ const TemplateGenerator: React.FC = () => {
         <AbnormalitiesSelector 
           abnormalities={abnormalities}
           toggle={toggleAbnormality}
+          subOptions={subOptions}
+          toggleSubOption={toggleSubOption}
           murmurGrade={murmurGrade}
           setMurmurGrade={setMurmurGrade}
           murmurSide={murmurSide}

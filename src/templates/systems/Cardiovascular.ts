@@ -2,15 +2,22 @@ import { TemplateContext, TemplateItem, DiagnosticItem, AssessmentItem, PlanItem
 import { cardiovascularConfig } from '../../config/systemTexts';
 
 export const buildCardiovascularObjective = (context: TemplateContext): TemplateItem => {
-  const { abnormalities, murmurGrade, murmurSide } = context;
+  const { abnormalities, subOptions, murmurGrade, murmurSide } = context;
   
   if (abnormalities.includes('Cardiovascular')) {
-    if (abnormalities.includes('Murmur')) {
-      return {
-        type: 'abnormal',
-        text: cardiovascularConfig.abnormal.withMurmur(murmurGrade, murmurSide),
-      };
+    const selectedOptions = subOptions['Cardiovascular'] || [];
+    
+    // Check if Murmur sub-option is selected
+    if (selectedOptions.includes('Murmur')) {
+      const murmurConfig = (cardiovascularConfig.subOptions as Record<string, any>)?.['Murmur'];
+      if (murmurConfig?.objectiveLabel) {
+        return {
+          type: 'abnormal',
+          text: murmurConfig.objectiveLabel(murmurGrade, murmurSide),
+        };
+      }
     }
+    
     return {
       type: 'abnormal',
       text: cardiovascularConfig.abnormal.label,
@@ -29,24 +36,41 @@ export const buildCardiovascularDiagnostics = (context: TemplateContext): Diagno
 };
 
 export const buildCardiovascularAssessment = (context: TemplateContext): AssessmentItem | null => {
-  const { abnormalities } = context;
+  const { abnormalities, subOptions } = context;
   
-  if (abnormalities.includes('Murmur')) {
-    return {
-      condition: cardiovascularConfig.assessment.murmur,
-    };
+  if (abnormalities.includes('Cardiovascular') && cardiovascularConfig.subOptions) {
+    const selectedOptions = subOptions['Cardiovascular'] || [];
+    
+    // Check for sub-option assessments
+    for (const option of selectedOptions) {
+      const config = (cardiovascularConfig.subOptions as Record<string, any>)?.[option];
+      if (config?.assessment) {
+        return { condition: config.assessment };
+      }
+    }
   }
   
   return null;
 };
 
 export const buildCardiovascularPlan = (context: TemplateContext): PlanItem[] => {
-  const { abnormalities } = context;
+  const { abnormalities, subOptions } = context;
   const items: PlanItem[] = [];
   
-  if (abnormalities.includes('Murmur')) {
-    items.push({ text: cardiovascularConfig.plan.murmur.discussion });
-    items.push({ text: cardiovascularConfig.plan.murmur.echo });
+  if (abnormalities.includes('Cardiovascular') && cardiovascularConfig.subOptions) {
+    const selectedOptions = subOptions['Cardiovascular'] || [];
+    
+    // Iterate through selected sub-options and add plan items
+    selectedOptions.forEach(option => {
+      const config = (cardiovascularConfig.subOptions as Record<string, any>)?.[option];
+      if (config?.plan) {
+        // Plan can be an array of strings or a single string
+        const planItems = Array.isArray(config.plan) ? config.plan : [config.plan];
+        planItems.forEach((text: string) => {
+          items.push({ text });
+        });
+      }
+    });
   }
   
   return items;
