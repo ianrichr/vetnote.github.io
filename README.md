@@ -68,6 +68,17 @@ npm start
 ```
 Opens the app at http://localhost:3000 in development mode with hot reloading.
 
+**For HTTPS (useful for testing clipboard functionality):**
+```bash
+HTTPS=true npm start
+```
+Opens the app at https://localhost:3000. Your browser will show a security warning for the self-signed certificate - click "Advanced" and "Proceed" (safe for local development).
+
+Alternatively, create a `.env` file in the project root:
+```
+HTTPS=true
+```
+
 ### Run Tests
 ```bash
 npm test
@@ -263,7 +274,7 @@ The modular architecture provides several advantages:
 
 ## Known Issues
 
-- **Copy-to-Clipboard**: When pasting into some veterinary charting software, the notes may be editable when they shouldn't be. Workaround: Right-click and select "Copy" instead of using the button. This is being investigated.
+- **Copy-to-Clipboard**: The copy function now strips `contentEditable` attributes before copying to prevent pasted notes from being unexpectedly editable in veterinary charting software. If you still experience issues with editability after pasting, please report via GitHub issues with details about your charting software.
 
 ## Browser Compatibility
 

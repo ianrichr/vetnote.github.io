@@ -74,11 +74,30 @@ const TemplateGenerator: React.FC = () => {
 
   const copyToClipboard = async () => {
     if (templateRef.current) {
+      // Clone the template and strip contentEditable attributes to prevent
+      // pasted content from being editable in veterinary charting software
+      const clone = templateRef.current.cloneNode(true) as HTMLElement;
+      clone.removeAttribute('contenteditable');
+      clone.querySelectorAll('[contenteditable]').forEach(el => 
+        el.removeAttribute('contenteditable')
+      );
+      
+      // Create temporary element with cleaned HTML for copying
+      const temp = document.createElement('div');
+      temp.innerHTML = clone.innerHTML;
+      temp.style.position = 'fixed';
+      temp.style.left = '-9999px';
+      document.body.appendChild(temp);
+      
+      // Select and copy the cleaned content
       const range = document.createRange();
-      range.selectNode(templateRef.current);
+      range.selectNodeContents(temp);
       window.getSelection()?.removeAllRanges();
       window.getSelection()?.addRange(range);
-      document.execCommand("copy");
+      document.execCommand('copy');
+      
+      // Cleanup
+      document.body.removeChild(temp);
       window.getSelection()?.removeAllRanges();
 
       setCopySuccess(true);
