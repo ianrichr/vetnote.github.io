@@ -68,8 +68,8 @@ export const eyesConfig = {
       },
       // Nested sub-options for Schirmer tear test results
       subOptions: {
-        'Dry Eye': {
-          assessment: 'Keratoconjunctivitis sicca (dry eye)',
+        'KCS (dry eye)': {
+          assessment: 'KCS (dry eye)',
         },
       },
     },
@@ -80,8 +80,8 @@ export const eyesConfig = {
       },
       // Nested sub-options for IOP findings (as requested!)
       subOptions: {
-        'Glaucoma': {
-          assessment: 'Glaucoma',
+        'Glaucoma/anterior uveitis': {
+          assessment: 'Glaucoma/anterior uveitis',
         },
       },
     },
@@ -161,6 +161,13 @@ export const integumentConfig = {
           'Discussed environmental control including knockout spray.',
           'Discussed tapeworm transmission - recommend broad spectrum deworker.',
           'Discussed pruritus control - recommend Cytopoint or Apoquel.',
+        ]
+      }
+    },
+    'Mass': {
+      plan: {
+        text: [
+          'Discussed mass with owner including diagnostics for further evaluation. Recommend FNA with cytology. Discussed limitations with owner - may not get diagnostic sample.',
         ]
       }
     },
