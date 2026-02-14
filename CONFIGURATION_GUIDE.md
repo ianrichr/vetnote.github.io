@@ -4,6 +4,74 @@
 
 VetNote now uses a **configuration-driven architecture** that makes adding new template options incredibly simple. Instead of modifying multiple files, you can now add new sub-options (like eye diagnostics) by **editing just one configuration file**.
 
+## Generic Builder Architecture
+
+VetNote uses a **generic builder pattern** that eliminates code duplication across all body systems:
+
+### How It Works
+
+**1. Generic Builders** (`src/utils/systemBuilders.ts`)
+- `buildGenericObjective()` - Works for ANY system's objective section
+- `buildGenericDiagnostics()` - Works for ANY system's diagnostics section  
+- `buildGenericAssessment()` - Works for ANY system's assessment section
+- `buildGenericPlan()` - Works for ANY system's plan section
+
+**2. System Files** (`src/templates/systems/*.ts`)
+Each system file is now just 4 simple one-liners:
+
+```typescript
+export const buildIntegumentObjective = (context: TemplateContext): TemplateItem => {
+  return buildGenericObjective(context, 'Integument', integumentConfig);
+};
+
+export const buildIntegumentDiagnostics = (context: TemplateContext): DiagnosticItem[] => {
+  return buildGenericDiagnostics(context, 'Integument', integumentConfig);
+};
+
+export const buildIntegumentAssessment = (context: TemplateContext): AssessmentItem[] => {
+  return buildGenericAssessment(context, 'Integument', integumentConfig);
+};
+
+export const buildIntegumentPlan = (context: TemplateContext): PlanItem[] => {
+  return buildGenericPlan(context, 'Integument', integumentConfig);
+};
+```
+
+**That's it!** All 12 body systems use this same pattern.
+
+### Benefits
+
+✅ **DRY**: One implementation, used everywhere (80%+ code reduction)  
+✅ **Consistent**: All systems behave identically  
+✅ **Maintainable**: Fix bugs once, applies everywhere  
+✅ **Simple**: Each system file is ~20 lines instead of 100+  
+✅ **Extensible**: Add features to generic builders, all systems get them automatically
+
+### Adding Nested Plan Items
+
+The generic builders support nested plan items (sub-bullets) automatically:
+
+```typescript
+'Fleas': {
+  plan: {
+    text: 'Discussed fleas with owner.',
+    nestedItems: [
+      'Discussed flea prevention - all pets treated for 4 months.',
+      'Discussed environmental control including knockout spray.',
+      'Discussed tapeworm transmission - recommend broad spectrum dewormer.'
+    ]
+  }
+}
+```
+
+This renders as:
+```
+• Discussed fleas with owner.
+  • Discussed flea prevention - all pets treated for 4 months.
+  • Discussed environmental control including knockout spray.
+  • Discussed tapeworm transmission - recommend broad spectrum dewormer.
+```
+
 ## Quick Start: Adding Sub-Options
 
 The system supports **infinitely nested sub-options**. Here's what it looks like:
@@ -117,19 +185,36 @@ export const [systemName]Config = {
 };
 ```
 
-### Step 2: Register in AbnormalitiesSelector
+### Step 2: Register in allSystemConfigsList
 
-Edit `src/components/AbnormalitiesSelector.tsx`:
+Edit `src/config/systemTexts.ts` and add your new config to the `allSystemConfigsList` array at the bottom:
 
 ```typescript
-const systemConfigs: Record<string, any> = {
-  'Eyes': eyesConfig,
-  'Cardiovascular': cardiovascularConfig,
-  'YourSystem': yourSystemConfig,  // Add this line
+export const allSystemConfigsList = [
+  oralNasalThroatConfig,
+  earsConfig,
+  eyesConfig,
+  // ... other configs
+  yourSystemConfig,  // Add this line
+];
+```
+
+**That's it!** The UI will automatically detect and render sub-options for your system.
+
+### Step 3: Ensure Config Has Name Property
+
+Each config must have a `name` property matching the system name:
+
+```typescript
+export const yourSystemConfig = {
+  name: 'YourSystem',  // Must match system name exactly
+  normal: '...',
+  abnormal: '...',
+  subOptions: { ... }
 };
 ```
 
-### Step 3: Update System Builder (if needed)
+### Step 4: Update System Builder (if needed)
 
 Most systems already support sub-options generically. If your system doesn't have sub-option support yet, follow the pattern in `src/templates/systems/Eyes.ts`:
 

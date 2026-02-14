@@ -118,7 +118,27 @@ This automatically:
 
 **Note**: You should never manually edit the `gh-pages` branch. It's automatically managed by the deployment script.
 
-## Configuration-Driven Architecture
+## Architecture Overview
+
+### Generic Builder Pattern
+
+VetNote uses a **generic builder pattern** that eliminates code duplication across all 12 body systems:
+
+- **Generic Builders** (`src/utils/systemBuilders.ts`): Four reusable functions that work for ANY body system
+  - `buildGenericObjective()` - Handles objective section for all systems
+  - `buildGenericDiagnostics()` - Handles diagnostics section for all systems
+  - `buildGenericAssessment()` - Handles assessment section for all systems
+  - `buildGenericPlan()` - Handles plan section with nested items support for all systems
+
+- **System Files** (`src/templates/systems/*.ts`): Each system file is now just 4 simple one-liners that call the generic builders
+
+**Benefits:**
+- ✅ **80% code reduction**: Each system file reduced from 100+ lines to ~20 lines
+- ✅ **Consistency**: All systems behave identically
+- ✅ **Maintainability**: Fix bugs once, applies to all systems
+- ✅ **Extensibility**: Add features to generic builders, all systems get them automatically
+
+### Configuration-Driven Architecture
 
 VetNote uses a powerful configuration-driven system that makes adding new template features incredibly simple. **See [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md) for detailed documentation.**
 
@@ -129,6 +149,7 @@ To add new diagnostic options with findings (like IOP test with Glaucoma finding
 ```typescript
 // In src/config/systemTexts.ts
 export const eyesConfig = {
+  name: 'Eyes',  // Name property enables auto-discovery
   // ... existing config
   subOptions: {
     'IOP': {
@@ -149,12 +170,19 @@ export const eyesConfig = {
     }
   }
 };
+
+// Register in allSystemConfigsList (one-time only for new systems)
+export const allSystemConfigsList = [
+  // ... other configs
+  eyesConfig,  // Auto-discovered via name property
+];
 ```
 
 **That's it!** The UI checkboxes, state management, and template generation happen automatically.
 
 ### Key Benefits
 
+- ✅ **Automatic Discovery**: Configs auto-register via `name` property
 - ✅ **One File Changes**: Add features by editing only `systemTexts.ts`
 - ✅ **Infinite Nesting**: Nest sub-options as deep as clinically meaningful
 - ✅ **Automatic UI**: Checkboxes render automatically

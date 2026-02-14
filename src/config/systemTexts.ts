@@ -1,8 +1,7 @@
-import { AnimalType, VisitType } from '../types/template.types';
-
 // Configuration for all body system texts
 
 export const oralNasalThroatConfig = {
+  name: 'Oral-Nasal-Throat',
   normal: {
     default: 'Oral-Nasal-Throat: Normal',
     puppyKitten: 'Oral-Nasal-Throat: Normal – deciduous teeth still present; no cleft palate',
@@ -20,6 +19,7 @@ export const oralNasalThroatConfig = {
 };
 
 export const earsConfig = {
+  name: 'Ears',
   normal: 'Ears: Normal',
   abnormal: {
     label: 'Ears: Abnormal',
@@ -41,6 +41,7 @@ export const earsConfig = {
 };
 
 export const eyesConfig = {
+  name: 'Eyes',
   normal: 'Eyes: Normal',
   abnormal: {
     label: 'Eyes: Abnormal',
@@ -81,7 +82,6 @@ export const eyesConfig = {
       subOptions: {
         'Glaucoma': {
           assessment: 'Glaucoma',
-          plan: 'Discussed glaucoma management including topical medications to reduce intraocular pressure. Recommend ophthalmology referral for ongoing monitoring.',
         },
       },
     },
@@ -97,6 +97,7 @@ export const eyesConfig = {
 };
 
 export const cardiovascularConfig = {
+  name: 'Cardiovascular',
   normal: 'Cardiovascular: Normal rate and rhythm; no murmur auscultated',
   abnormal: {
     label: 'Cardiovascular: Abnormal',
@@ -119,11 +120,13 @@ export const cardiovascularConfig = {
 };
 
 export const respiratoryConfig = {
+  name: 'Respiratory',
   normal: 'Respiratory: Normal bronchovesicular sounds auscultated bilaterally',
   abnormal: 'Respiratory: Abnormal',
 };
 
 export const abdominalConfig = {
+  name: 'Abdominal',
   normal: {
     default: 'Abdominal: Normal - soft and non-tender on palpation',
     puppyKitten:
@@ -133,33 +136,52 @@ export const abdominalConfig = {
 };
 
 export const genitourinaryConfig = {
+  name: 'Genitourinary',
   normal: 'Genitourinary: Normal',
   abnormal: 'Genitourinary: Abnormal',
 };
 
 export const musculoskeletalConfig = {
+  name: 'Musculoskeletal',
   normal:
     'Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation',
   abnormal: 'Musculoskeletal: Abnormal',
 };
 
 export const integumentConfig = {
+  name: 'Integument',
   normal: 'Integument: Normal',
   abnormal: 'Integument: Abnormal',
+  subOptions: {
+    'Fleas': {
+      plan: {
+        text: 'Discussed fleas with owner.',
+        nestedItems: [
+          'Discussed flea prevention - all pets in household treated with prescription products for at least 4 months.',
+          'Discussed environmental control including knockout spray.',
+          'Discussed tapeworm transmission - recommend broad spectrum deworker.',
+          'Discussed pruritus control - recommend Cytopoint or Apoquel.',
+        ]
+      }
+    },
+  },
 };
 
 export const lymphaticsConfig = {
+  name: 'Lymphatics',
   normal: 'Lymphatics: Normal – no lymphadenopathy appreciated',
   abnormal: 'Lymphatics: Abnormal',
 };
 
 export const neurologicalConfig = {
+  name: 'Neurological',
   normal:
     'Neurological: Normal - mentation appropriate; full neurological exam not performed',
   abnormal: 'Neurological: Abnormal',
 };
 
 export const rectalConfig = {
+  name: 'Rectal',
   normal: 'Rectal: <u>Not examined</u>',
   abnormal: 'Rectal: Abnormal',
 };
@@ -170,3 +192,19 @@ export const getPuppyKittenDiagnostics = () => ({
     label: 'Fecal ova and parasites - ',
   },
 });
+
+// Export all system configs as array for automatic discovery
+export const allSystemConfigsList = [
+  oralNasalThroatConfig,
+  earsConfig,
+  eyesConfig,
+  cardiovascularConfig,
+  respiratoryConfig,
+  abdominalConfig,
+  genitourinaryConfig,
+  musculoskeletalConfig,
+  integumentConfig,
+  lymphaticsConfig,
+  neurologicalConfig,
+  rectalConfig,
+];

@@ -1,33 +1,24 @@
 import { TemplateContext, TemplateItem, DiagnosticItem, AssessmentItem, PlanItem } from '../../types/template.types';
 import { neurologicalConfig } from '../../config/systemTexts';
+import { 
+  buildGenericObjective,
+  buildGenericDiagnostics,
+  buildGenericAssessment,
+  buildGenericPlan
+} from '../../utils/systemBuilders';
 
 export const buildNeurologicalObjective = (context: TemplateContext): TemplateItem => {
-  const { abnormalities } = context;
-  
-  if (abnormalities.includes('Neurological')) {
-    return {
-      type: 'abnormal',
-      text: neurologicalConfig.abnormal,
-    };
-  }
-  
-  return {
-    type: 'normal',
-    text: neurologicalConfig.normal,
-  };
+  return buildGenericObjective(context, 'Neurological', neurologicalConfig);
 };
 
-export const buildNeurologicalDiagnostics = (context: TemplateContext): DiagnosticItem | null => {
-  // No specific diagnostics for neurological in current implementation
-  return null;
+export const buildNeurologicalDiagnostics = (context: TemplateContext): DiagnosticItem[] => {
+  return buildGenericDiagnostics(context, 'Neurological', neurologicalConfig);
 };
 
-export const buildNeurologicalAssessment = (context: TemplateContext): AssessmentItem | null => {
-  // No specific assessment for neurological in current implementation
-  return null;
+export const buildNeurologicalAssessment = (context: TemplateContext): AssessmentItem[] => {
+  return buildGenericAssessment(context, 'Neurological', neurologicalConfig);
 };
 
-export const buildNeurologicalPlan = (context: TemplateContext): PlanItem | null => {
-  // No specific plan items for neurological in current implementation
-  return null;
+export const buildNeurologicalPlan = (context: TemplateContext): PlanItem[] => {
+  return buildGenericPlan(context, 'Neurological', neurologicalConfig);
 };

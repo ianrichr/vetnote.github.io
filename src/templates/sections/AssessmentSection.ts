@@ -25,15 +25,15 @@ export const buildAssessmentSection = (context: TemplateContext): AssessmentSect
     return { items };
   }
   
-  // Add system-specific assessments
+  // Add system-specific assessments (all return arrays now)
   const oralAssessment = buildOralNasalThroatAssessment(context);
-  if (oralAssessment) {
-    items.push(oralAssessment);
+  if (oralAssessment.length > 0) {
+    items.push(...oralAssessment);
   }
   
   const earsAssessment = buildEarsAssessment(context);
-  if (earsAssessment) {
-    items.push(earsAssessment);
+  if (earsAssessment.length > 0) {
+    items.push(...earsAssessment);
   }
   
   const eyesAssessments = buildEyesAssessment(context);
@@ -42,8 +42,8 @@ export const buildAssessmentSection = (context: TemplateContext): AssessmentSect
   }
   
   const cardiovascularAssessment = buildCardiovascularAssessment(context);
-  if (cardiovascularAssessment) {
-    items.push(cardiovascularAssessment);
+  if (cardiovascularAssessment.length > 0) {
+    items.push(...cardiovascularAssessment);
   }
   
   return { items };

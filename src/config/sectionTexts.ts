@@ -1,5 +1,3 @@
-import { AnimalType, VisitType } from '../types/template.types';
-
 // Assessment section configurations
 
 export const assessmentConfig = {

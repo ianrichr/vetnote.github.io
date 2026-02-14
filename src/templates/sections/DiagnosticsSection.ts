@@ -6,10 +6,10 @@ import { getPuppyKittenDiagnostics } from '../../config/systemTexts';
 export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSection => {
   const items: DiagnosticItem[] = [];
   
-  // Ears diagnostics
+  // Ears diagnostics (returns array now)
   const earsDiagnostics = buildEarsDiagnostics(context);
-  if (earsDiagnostics) {
-    items.push(earsDiagnostics);
+  if (earsDiagnostics.length > 0) {
+    items.push(...earsDiagnostics);
   }
   
   // Eyes diagnostics

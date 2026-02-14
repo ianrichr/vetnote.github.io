@@ -1,7 +1,7 @@
 import React from "react";
 import MurmurGradeSelector from "./MurmurGradeSelector";
 import MurmurSideSelector from "./MurmurSideSelector";
-import { eyesConfig, cardiovascularConfig } from "../config/systemTexts";
+import { allSystemConfigsList } from "../config/systemTexts";
 
 interface AbnormalitiesSelectorProps {
   abnormalities: string[];
@@ -14,11 +14,13 @@ interface AbnormalitiesSelectorProps {
   setMurmurSide: (side: string) => void;
 }
 
-// Map of system names to their configs
-const systemConfigs: Record<string, any> = {
-  'Eyes': eyesConfig,
-  'Cardiovascular': cardiovascularConfig,
-};
+// Automatically build system configs map from name property
+const systemConfigs: Record<string, any> = {};
+allSystemConfigsList.forEach(config => {
+  if (config.name) {
+    systemConfigs[config.name] = config;
+  }
+});
 
 const AbnormalitiesSelector: React.FC<AbnormalitiesSelectorProps> = ({
   abnormalities,

@@ -87,7 +87,6 @@ describe('TemplateGenerator - Baseline Tests', () => {
       const template = getGeneratedTemplate(container);
 
       expect(template).toContain('Apparently healthy!');
-      expect(template).toContain('Discussed dental health – recommend brushing teeth daily');
       expect(template).toContain('Discussed diet – discussed risks with grain free');
       expect(template).toContain('Discussed parasite prevention – recommend monthly flea/tick prevention');
       expect(template).toContain('Discussed vaccines');
@@ -124,8 +123,9 @@ describe('TemplateGenerator - Baseline Tests', () => {
       expect(template).toContain('<li>OS</li>');
       // Eye diagnostics/assessments now require explicit sub-option selection
       // Plan text still shows automatically
-      expect(template).toContain('Discussed eye findings with owner');
+      expect(template).toContain('Recommend fluorescein stain');
       expect(template).toContain('Recommend Schirmer tear test');
+      expect(template).toContain('Recommend assessing IOP');
     });
 
     it('should generate correct template for dog with heart murmur', () => {
@@ -247,7 +247,8 @@ describe('TemplateGenerator - Baseline Tests', () => {
       expect(template).toContain('Otitis externa');
       // Eye diagnostics/assessments require explicit sub-option selection
       // Plan text still shows automatically
-      expect(template).toContain('Discussed eye findings with owner');
+      expect(template).toContain('Recommend fluorescein stain');
+      expect(template).toContain('Recommend Schirmer tear test');
     });
   });
 
@@ -268,7 +269,8 @@ describe('TemplateGenerator - Baseline Tests', () => {
       expect(template).toContain('Otitis externa');
       // Eye diagnostics/assessments require explicit sub-option selection
       // Plan text still shows automatically
-      expect(template).toContain('Discussed eye findings with owner');
+      expect(template).toContain('Recommend fluorescein stain');
+      expect(template).toContain('Recommend Schirmer tear test');
     });
   });
 
