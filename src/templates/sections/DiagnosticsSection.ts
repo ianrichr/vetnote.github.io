@@ -11,10 +11,11 @@ export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSe
   const hasAbnormalities = context.abnormalities.length > 0;
   
   // Add healthy diagnositic text if no abnormalities
-  if (!hasAbnormalities && context.visitType != "Sick") {
+  if (!hasAbnormalities && context.visitType === 'Wellness') {
     let defaultDiagosticText = diagnosticsConfig.wellness.default;
     let dogDiagnosticText = diagnosticsConfig.wellness.dog;
-    let catDiagnosticText = diagnosticsConfig.wellness.cat
+    let catDiagnosticText = diagnosticsConfig.wellness.cat;
+    
     items.push({ label: defaultDiagosticText });
 
     if (context.animal === 'Dog' && dogDiagnosticText) {

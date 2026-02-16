@@ -61,9 +61,9 @@ export const planConfig = {
   },
   puppy: {
     peFindings: 'Discussed above PE findings with owner',
-    diet: 'Discussed diet – recommend continuing puppy diet until at least 1 yr of age. Discussed risks with grain free (heart disease) and raw diets (e. coli, salmonella, and avian influenza) – do not recommend for future diets!',
+    diet: 'Discussed diet – recommend continuing puppy diet until at least 1 yr of age. Discussed risks with grain free and raw diets. Do not recommend for future diets.',
     parasite:
-      'Discussed parasite prevention – recommend fecal to lab to assess for parasites. Recommend monthly flea/tick prevention year round. Recommend starting on Simparica Trio today and continuing monthly. HWT due at 6 months of age.',
+      'Discussed parasite prevention – recommend fecal to lab to assess for parasites. Recommend monthly flea/tick prevention year round with Simparica Trio. HWT due at 6 months of age.',
     training:
       'Discussed normal puppy behaviors and training – educated owner on training including crate and potty training.',
     toxins:
@@ -71,16 +71,16 @@ export const planConfig = {
     vaccines:
       'Discussed vaccines with owner including core (rabies, DHPP, and leptospirosis) and lifestyle (Bordetella and canine influenza vaccine).',
     neutering:
-      'Discussed neutering/spaying – recommend at ***. Discussed risks with procedure and GA with owner. Pre-op bloodwork due before procedure.',
+      'Discussed neutering/spaying – recommend at ***. Discussed risks with procedure.',
     planForToday: 'Plan for today:',
     ownerAgrees:
       'Owner agrees with above plan and has no questions at this time.',
   },
   kitten: {
-    peFindings: 'Discussed above PE findings with owner',
-    diet: 'Discussed diet – recommend continuing kitten diet until 1 yr of age. Discussed risks with raw diets (e. coli, salmonella, and avian influenza) – do not recommend for future diets! Discussed extra risks of avian influenza with raw chicken, eggs, and milk products – do not recommend.',
+    peFindings: 'Discussed above PE findings with owner.',
+    diet: 'Discussed diet – recommend continuing kitten diet until 1 yr of age. Discussed risks with grain free and raw diets – do not recommend.',
     parasite:
-      'Discussed parasite prevention – recommend fecal to lab to assess for parasites. Recommend monthly flea/tick prevention year-round. Recommend starting on revolution and continuing monthly.',
+      'Discussed parasite prevention – recommend fecal to lab to assess for parasites. Recommend monthly flea/tick prevention year-round with Revolution.',
     enrichment:
       'Discussed normal kitten behaviors and environmental enrichment – Ohio State Indoor Initiative handout sent with owner.',
     toxins:
@@ -88,7 +88,7 @@ export const planConfig = {
     vaccines:
       'Discussed vaccines with owner (rabies, FVRCP, and FeLV). Recommend FeLV for all kittens under 1 year of age and then annually for all indoor/outdoor cats.',
     neutering:
-      'Discussed neutering/spaying – recommend at 6 months of age. Discussed risks with procedure and GA with owner. Pre-op bloodwork due before procedure.',
+      'Discussed neutering/spaying – recommend at 6 months of age. Discussed risks with procedure.',
     planForToday: 'Plan for today:',
     ownerAgrees:
       'Owner agrees with above plan and has no questions at this time.',
