@@ -8,19 +8,29 @@ export const assessmentConfig = {
   },
 };
 
+// Diagnostics section configurations
+
+export const diagnosticsConfig = {
+  wellness: {
+    default: 'Fecal ova and parasites - ',
+    dog: 'HWT - ',
+    cat: '',
+  },
+};
+
 // Plan section configurations by visit type and animal
 
 export const planConfig = {
   wellness: {
     dog: {
       peFindings: 'Discussed above PE findings with owner',
-      diet: 'Discussed diet – discussed risks with grain free (heart disease) and raw diets (e.coli, salmonella, and avian influenza) – do not recommend!',
+      dentalHealth: 'Discussed dental health -- recommend VOHC approved products for plaque removal.',
       parasite:
-        'Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend simparica trio at this time due to HW prevention. Discussed with owner HW not as prevalent in WA state but may be seeing more cases as climate becomes warmer – recommend monthly prevention at this time. HWT ***. Estimate provided.',
+        'Discussed parasite prevention – recommend monthly flea/tick prevention with Simparica Trio for HW prevention. Recommend annual fecals to lab.',
       activity:
         'Discussed activity and mobility – no changes noted by owner and no signs of arthritis.',
       vaccines:
-        'Discussed vaccines – today due for ***. Discussed canine influenza vaccine. Discussed vaccine reactions with owner.',
+        'Discussed vaccines including vaccine reactions -- VOHC handout provided to owner.',
       planForToday: 'Plan for today:',
       ownerAgrees:
         'Owner agrees with above plan and has no questions at this time.',

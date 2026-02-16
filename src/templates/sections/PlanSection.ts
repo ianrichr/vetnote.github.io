@@ -113,7 +113,7 @@ const getVisitSpecificPlanItems = (context: TemplateContext): PlanItem[] => {
   const items: PlanItem[] = [];
   
   if (context.visitType === 'Wellness' && context.animal === 'Dog') {
-    items.push({ text: planConfig.wellness.dog.diet });
+    items.push({text: planConfig.wellness.dog.dentalHealth});
     items.push({ text: planConfig.wellness.dog.parasite });
     items.push({ text: planConfig.wellness.dog.activity });
     items.push({ text: planConfig.wellness.dog.vaccines });
