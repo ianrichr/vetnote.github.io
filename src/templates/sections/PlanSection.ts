@@ -118,12 +118,11 @@ const getVisitSpecificPlanItems = (context: TemplateContext): PlanItem[] => {
     items.push({ text: planConfig.wellness.dog.activity });
     items.push({ text: planConfig.wellness.dog.vaccines });
   } else if (context.visitType === 'Wellness' && context.animal === 'Cat') {
-    items.push({ text: planConfig.wellness.cat.diet });
+    items.push({text: planConfig.wellness.cat.dentalHealth});
     items.push({ text: planConfig.wellness.cat.indoorOutdoor });
     items.push({ text: planConfig.wellness.cat.parasite });
     items.push({ text: planConfig.wellness.cat.activity });
     items.push({ text: planConfig.wellness.cat.vaccines });
-    items.push({ text: planConfig.wellness.cat.felvVaccine });
   } else if (context.visitType === 'Puppy') {
     items.push({ text: planConfig.puppy.diet });
     items.push({ text: planConfig.puppy.parasite });

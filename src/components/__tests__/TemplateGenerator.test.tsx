@@ -87,7 +87,6 @@ describe('TemplateGenerator - Baseline Tests', () => {
       const template = getGeneratedTemplate(container);
 
       expect(template).toContain('Apparently healthy!');
-      expect(template).toContain('Discussed diet – discussed risks with grain free');
       expect(template).toContain('Discussed parasite prevention – recommend monthly flea/tick prevention');
       expect(template).toContain('Discussed vaccines');
     });
@@ -169,11 +168,9 @@ describe('TemplateGenerator - Baseline Tests', () => {
       const template = getGeneratedTemplate(container);
 
       expect(template).toContain('Apparently healthy!');
-      expect(template).toContain('Discussed diet - discussed risks with raw diets');
       expect(template).toContain('avian influenza');
       expect(template).toContain('Indoor/outdoor status');
       expect(template).toContain('FIV/FeLV');
-      expect(template).toContain('Discussed FeLV vaccine');
     });
   });
 

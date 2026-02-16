@@ -23,31 +23,29 @@ export const diagnosticsConfig = {
 export const planConfig = {
   wellness: {
     dog: {
-      peFindings: 'Discussed above PE findings with owner',
-      dentalHealth: 'Discussed dental health -- recommend VOHC approved products for plaque removal.',
+      peFindings: 'Discussed above PE findings with owner.',
+      dentalHealth: 'Discussed dental health – recommend VOHC approved products for plaque removal.',
       parasite:
         'Discussed parasite prevention – recommend monthly flea/tick prevention with Simparica Trio for HW prevention. Recommend annual fecals to lab.',
       activity:
         'Discussed activity and mobility – no changes noted by owner and no signs of arthritis.',
       vaccines:
-        'Discussed vaccines including vaccine reactions -- VOHC handout provided to owner.',
+        'Discussed vaccines including vaccine reactions – VOHC handout provided to owner.',
       planForToday: 'Plan for today:',
       ownerAgrees:
         'Owner agrees with above plan and has no questions at this time.',
     },
     cat: {
-      peFindings: 'Discussed above PE findings with owner',
-      diet: 'Discussed diet - discussed risks with raw diets (especially poultry) and raw milk – increased risk for Avian influenza – do not recommend any raw food including freeze dried poultry products.',
+      peFindings: 'Discussed above PE findings with owner.',
+      dentalHealth: 'Discussed dental health – recommend VOHC approved products for plaque removal.',
       indoorOutdoor:
         'Indoor/outdoor status – discussed risks associated with FIV/FeLV and avian influenza with owner.',
       parasite:
-        'Discussed parasite prevention – recommend monthly flea/tick prevention year round with annual fecals. Recommend revolution.',
+        'Discussed parasite prevention – recommend monthly flea/tick prevention year round with Revolution. Recommend annual fecals to lab.',
       activity:
         'Discussed activity and mobility – no changes in jumping on couches/bed or using litterbox per owner report.',
       vaccines:
-        'Discussed vaccines – today due for ***. Discussed with owner vaccine reactions and risk for injection site sarcoma in cats.',
-      felvVaccine:
-        'Discussed FeLV vaccine – recommend for all cats under 1 yr of age and then for indoor/outdoor cats. ***Recommend FIV/FeLV test today and if negative recommend FeLV vax today and booster in 3-4 weeks. ***Recommend annual FeLV booster.',
+        'Discussed vaccines including vaccine reactions.',
       planForToday: 'Plan for today:',
       ownerAgrees:
         'Owner agrees with above plan and has no questions at this time.',
