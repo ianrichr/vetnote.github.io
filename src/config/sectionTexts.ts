@@ -54,6 +54,7 @@ export const planConfig = {
   sick: {
     common: {
       peFindings: 'Discussed above PE findings with owner',
+      etiologies: 'Discussed ***, including possible etiologies (as above) and diagnostics for further evaluation.',
       planForToday: 'Plan for today:',
       ownerAgrees:
         'Owner agrees with above plan and has no questions at this time.',

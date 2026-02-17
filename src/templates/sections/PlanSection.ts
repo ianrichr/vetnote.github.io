@@ -84,6 +84,10 @@ export const buildPlanSection = (context: TemplateContext): PlanSection => {
   items.push(...getVisitSpecificPlanItems(context));
   
   // Add plan for today and owner agreement
+  const etiologiesText = getEtiologiesText(context);
+  if (etiologiesText) {
+    items.push({ text: etiologiesText });
+  }
   items.push({ text: getPlanForTodayText(context), nestedItems: [' '] });
   items.push({ text: getOwnerAgreesText(context) });
   
@@ -91,22 +95,18 @@ export const buildPlanSection = (context: TemplateContext): PlanSection => {
 };
 
 const getPEFindingsText = (context: TemplateContext): string => {
-  if (context.visitType === 'Wellness' && context.animal === 'Dog') {
-    return planConfig.wellness.dog.peFindings;
+  switch (context.visitType) {
+    case 'Wellness':
+      return context.animal === 'Dog' 
+        ? planConfig.wellness.dog.peFindings
+        : planConfig.wellness.cat.peFindings;
+    case 'Sick':
+      return planConfig.sick.common.peFindings;
+    case 'Puppy':
+      return planConfig.puppy.peFindings;
+    case 'Kitten':
+      return planConfig.kitten.peFindings;
   }
-  if (context.visitType === 'Wellness' && context.animal === 'Cat') {
-    return planConfig.wellness.cat.peFindings;
-  }
-  if (context.visitType === 'Sick') {
-    return planConfig.sick.common.peFindings;
-  }
-  if (context.visitType === 'Puppy') {
-    return planConfig.puppy.peFindings;
-  }
-  if (context.visitType === 'Kitten') {
-    return planConfig.kitten.peFindings;
-  }
-  return planConfig.wellness.dog.peFindings;
 };
 
 const getVisitSpecificPlanItems = (context: TemplateContext): PlanItem[] => {
@@ -142,40 +142,39 @@ const getVisitSpecificPlanItems = (context: TemplateContext): PlanItem[] => {
   return items;
 };
 
-const getPlanForTodayText = (context: TemplateContext): string => {
-  if (context.visitType === 'Wellness' && context.animal === 'Dog') {
-    return planConfig.wellness.dog.planForToday;
-  }
-  if (context.visitType === 'Wellness' && context.animal === 'Cat') {
-    return planConfig.wellness.cat.planForToday;
-  }
+const getEtiologiesText = (context: TemplateContext): string => {
   if (context.visitType === 'Sick') {
-    return planConfig.sick.common.planForToday;
+    return planConfig.sick.common.etiologies;
   }
-  if (context.visitType === 'Puppy') {
-    return planConfig.puppy.planForToday;
+  return '';
+};
+
+const getPlanForTodayText = (context: TemplateContext): string => {
+  switch (context.visitType) {
+    case 'Wellness':
+      return context.animal === 'Dog' 
+        ? planConfig.wellness.dog.planForToday
+        : planConfig.wellness.cat.planForToday;
+    case 'Sick':
+      return planConfig.sick.common.planForToday;
+    case 'Puppy':
+      return planConfig.puppy.planForToday;
+    case 'Kitten':
+      return planConfig.kitten.planForToday;
   }
-  if (context.visitType === 'Kitten') {
-    return planConfig.kitten.planForToday;
-  }
-  return planConfig.wellness.dog.planForToday;
 };
 
 const getOwnerAgreesText = (context: TemplateContext): string => {
-  if (context.visitType === 'Wellness' && context.animal === 'Dog') {
-    return planConfig.wellness.dog.ownerAgrees;
+  switch (context.visitType) {
+    case 'Wellness':
+      return context.animal === 'Dog' 
+        ? planConfig.wellness.dog.ownerAgrees
+        : planConfig.wellness.cat.ownerAgrees;
+    case 'Sick':
+      return planConfig.sick.common.ownerAgrees;
+    case 'Puppy':
+      return planConfig.puppy.ownerAgrees;
+    case 'Kitten':
+      return planConfig.kitten.ownerAgrees;
   }
-  if (context.visitType === 'Wellness' && context.animal === 'Cat') {
-    return planConfig.wellness.cat.ownerAgrees;
-  }
-  if (context.visitType === 'Sick') {
-    return planConfig.sick.common.ownerAgrees;
-  }
-  if (context.visitType === 'Puppy') {
-    return planConfig.puppy.ownerAgrees;
-  }
-  if (context.visitType === 'Kitten') {
-    return planConfig.kitten.ownerAgrees;
-  }
-  return planConfig.wellness.dog.ownerAgrees;
 };
