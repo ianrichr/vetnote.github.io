@@ -1,6 +1,7 @@
 import { TemplateContext, DiagnosticsSection, DiagnosticItem } from '../../types/template.types';
 import { buildEarsDiagnostics } from '../systems/Ears';
 import { buildEyesDiagnostics } from '../systems/Eyes';
+import { buildIntegumentDiagnostics } from '../systems/Integument';
 import { getPuppyKittenDiagnostics } from '../../config/systemTexts';
 import { diagnosticsConfig } from '../../config/sectionTexts';
 
@@ -37,6 +38,12 @@ export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSe
   const eyesDiagnostics = buildEyesDiagnostics(context);
   if (eyesDiagnostics.length > 0) {
     items.push(...eyesDiagnostics);
+  }
+  
+  // Integument diagnostics
+  const integumentDiagnostics = buildIntegumentDiagnostics(context);
+  if (integumentDiagnostics.length > 0) {
+    items.push(...integumentDiagnostics);
   }
   
   // Puppy/Kitten diagnostics

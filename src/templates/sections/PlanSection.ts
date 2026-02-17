@@ -88,7 +88,13 @@ export const buildPlanSection = (context: TemplateContext): PlanSection => {
   if (etiologiesText) {
     items.push({ text: etiologiesText });
   }
-  items.push({ text: getPlanForTodayText(context), nestedItems: [' '] });
+
+  // VOHC handout provided to owner should be in nestedItems if it's a wellness
+  if (context.visitType === 'Wellness') {
+    items.push({ text: getPlanForTodayText(context), nestedItems: ['VOHC handout provided to owner'] });
+  } else {
+    items.push({ text: getPlanForTodayText(context), nestedItems: [' '] });
+  }
   items.push({ text: getOwnerAgreesText(context) });
   
   return { items };

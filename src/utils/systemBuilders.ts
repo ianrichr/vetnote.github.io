@@ -77,15 +77,11 @@ export const buildGenericDiagnostics = (
     return items;
   }
   
-  // Check for base diagnostics (non-sub-option)
-  if (config.diagnostics) {
-    Object.values(config.diagnostics).forEach((diag: any) => {
-      if (diag.label) {
-        items.push({ 
-          label: diag.label, 
-          details: diag.details 
-        });
-      }
+  // Check for base diagnostics (standardized: single object with label/details)
+  if (config.diagnostics?.label) {
+    items.push({ 
+      label: config.diagnostics.label, 
+      details: config.diagnostics.details 
     });
   }
   
@@ -119,9 +115,9 @@ export const buildGenericAssessment = (
     return items;
   }
   
-  // Base assessment (non-sub-option)
-  if (config.assessment?.condition) {
-    items.push({ condition: config.assessment.condition });
+  // Base assessment (standardized: direct string)
+  if (config.assessment) {
+    items.push({ condition: config.assessment });
   }
   
   // Sub-option assessments
@@ -151,12 +147,10 @@ export const buildGenericPlan = (
     return items;
   }
   
-  // Base plan items (non-sub-option)
-  if (config.plan) {
-    Object.values(config.plan).forEach((planText: any) => {
-      if (typeof planText === 'string') {
-        items.push({ text: planText });
-      }
+  // Base plan items (standardized: array of strings)
+  if (Array.isArray(config.plan)) {
+    config.plan.forEach((text: string) => {
+      items.push({ text });
     });
   }
   

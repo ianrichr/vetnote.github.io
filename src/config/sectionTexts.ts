@@ -30,7 +30,7 @@ export const planConfig = {
       activity:
         'Discussed activity and mobility – no changes noted by owner and no signs of arthritis.',
       vaccines:
-        'Discussed vaccines including vaccine reactions – VOHC handout provided to owner.',
+        'Discussed vaccines including vaccine reactions.',
       planForToday: 'Plan for today:',
       ownerAgrees:
         'Owner agrees with above plan and has no questions at this time.',

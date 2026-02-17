@@ -1,4 +1,5 @@
 // Configuration for all body system texts
+// Standardized structure for consistency and maintainability
 
 export const oralNasalThroatConfig = {
   name: 'Oral-Nasal-Throat',
@@ -9,52 +10,53 @@ export const oralNasalThroatConfig = {
   abnormal: {
     label: 'Oral-Nasal-Throat: Abnormal',
   },
-  assessment: {
-    condition: 'Dental disease',
-  },
-  plan: {
-    abnormal: 'Discussed dental disease – recommend dental under GA at this time for COHAT. Discussed risks with GA and ways practice minimizes risk including pre-op bloodwork to assess underlying organ function. Dental estimate sent with owner lvl ***',
-    wellness: 'Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Alternatively, recommend any VOHC approved dental products for plaque removal.',
-  },
+  assessment: 'Dental disease',
+  plan: [
+    'Discussed dental disease – recommend dental under GA at this time for COHAT. Discussed risks with GA and ways practice minimizes risk including pre-op bloodwork to assess underlying organ function. Dental estimate sent with owner lvl ***',
+    'Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Alternatively, recommend any VOHC approved dental products for plaque removal.',
+  ],
 };
 
 export const earsConfig = {
   name: 'Ears',
-  normal: 'Ears: Normal',
+  normal: {
+    default: 'Ears: Normal',
+  },
   abnormal: {
     label: 'Ears: Abnormal',
     details: ['AD', 'AS'],
   },
   diagnostics: {
-    cytology: {
-      label: 'Ear cytology',
-      details: ['AD', 'AS'],
-    },
+    label: 'Ear cytology',
+    details: ['AD', 'AS'],
   },
-  assessment: {
-    condition: 'Otitis externa',
-  },
-  plan: {
-    discussion: 'Discussed with owner otitis externa. Recommend ear cytology for further evaluation.',
-    allergies: 'Discussed with owner likely underlying allergies - if ear infections re-occur or if skin issues develop will plan to discuss in more detail',
-  },
+  assessment: 'Otitis externa',
+  plan: [
+    'Discussed with owner otitis externa. Recommend ear cytology for further evaluation.',
+    'Discussed with owner likely underlying allergies - if ear infections re-occur or if skin issues develop will plan to discuss in more detail',
+  ],
 };
 
 export const eyesConfig = {
   name: 'Eyes',
-  normal: 'Eyes: Normal',
+  normal: {
+    default: 'Eyes: Normal',
+  },
   abnormal: {
     label: 'Eyes: Abnormal',
     details: ['OD', 'OS'],
   },
-  // Configuration-driven sub-options with RECURSIVE NESTING support!
+  plan: [
+    'Recommend fluorescein stain to evaluate for corneal ulcer.',
+    'Recommend Schirmer tear test to evaluate tear production.',
+    'Recommend assessing IOP given PE findings.',
+  ],
   subOptions: {
     'Fluorescein Stain': {
       diagnostics: {
         label: 'Fluorescein stain',
         details: ['OD', 'OS'],
       },
-      // Nested sub-options for Fluorescein results
       subOptions: {
         'Corneal Ulcer': {
           assessment: 'Corneal ulcer',
@@ -66,7 +68,6 @@ export const eyesConfig = {
         label: 'Schirmer tear test',
         details: ['OD', 'OS'],
       },
-      // Nested sub-options for Schirmer tear test results
       subOptions: {
         'KCS (dry eye)': {
           assessment: 'KCS (dry eye)',
@@ -78,7 +79,6 @@ export const eyesConfig = {
         label: 'Intraocular pressure',
         details: ['OD', 'OS'],
       },
-      // Nested sub-options for IOP findings (as requested!)
       subOptions: {
         'Glaucoma/anterior uveitis': {
           assessment: 'Glaucoma/anterior uveitis',
@@ -89,20 +89,16 @@ export const eyesConfig = {
       assessment: 'Conjunctivitis',
     },
   },
-  plan: {
-    fluoresceinStain: 'Recommend fluorescein stain to evaluate for corneal ulcer.',
-    schirmerTearTest: 'Recommend Schirmer tear test to evaluate tear production.',
-    intraocularPressure: 'Recommend assessing IOP given PE findings.'
-  },
 };
 
 export const cardiovascularConfig = {
   name: 'Cardiovascular',
-  normal: 'Cardiovascular: Normal rate and rhythm; no murmur auscultated',
+  normal: {
+    default: 'Cardiovascular: Normal rate and rhythm; no murmur auscultated',
+  },
   abnormal: {
     label: 'Cardiovascular: Abnormal',
   },
-  // Configuration-driven sub-options
   subOptions: {
     'Murmur': {
       // Murmur has additional grade/side parameters handled separately
@@ -121,37 +117,53 @@ export const cardiovascularConfig = {
 
 export const respiratoryConfig = {
   name: 'Respiratory',
-  normal: 'Respiratory: Normal bronchovesicular sounds auscultated bilaterally',
-  abnormal: 'Respiratory: Abnormal',
+  normal: {
+    default: 'Respiratory: Normal bronchovesicular sounds auscultated bilaterally',
+  },
+  abnormal: {
+    label: 'Respiratory: Abnormal',
+  },
 };
 
 export const abdominalConfig = {
   name: 'Abdominal',
   normal: {
     default: 'Abdominal: Normal - soft and non-tender on palpation',
-    puppyKitten:
-      'Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia',
+    puppyKitten: 'Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia',
   },
-  abnormal: 'Abdominal: Abnormal',
+  abnormal: {
+    label: 'Abdominal: Abnormal',
+  },
 };
 
 export const genitourinaryConfig = {
   name: 'Genitourinary',
-  normal: 'Genitourinary: Normal',
-  abnormal: 'Genitourinary: Abnormal',
+  normal: {
+    default: 'Genitourinary: Normal',
+  },
+  abnormal: {
+    label: 'Genitourinary: Abnormal',
+  },
 };
 
 export const musculoskeletalConfig = {
   name: 'Musculoskeletal',
-  normal:
-    'Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation',
-  abnormal: 'Musculoskeletal: Abnormal',
+  normal: {
+    default: 'Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation',
+  },
+  abnormal: {
+    label: 'Musculoskeletal: Abnormal',
+  },
 };
 
 export const integumentConfig = {
   name: 'Integument',
-  normal: 'Integument: Normal',
-  abnormal: 'Integument: Abnormal',
+  normal: {
+    default: 'Integument: Normal',
+  },
+  abnormal: {
+    label: 'Integument: Abnormal',
+  },
   subOptions: {
     'Fleas': {
       plan: {
@@ -161,36 +173,46 @@ export const integumentConfig = {
           'Discussed environmental control including knockout spray.',
           'Discussed tapeworm transmission - recommend broad spectrum deworker.',
           'Discussed pruritus control - recommend Cytopoint or Apoquel.',
-        ]
-      }
+        ],
+      },
     },
     'Mass': {
-      plan: {
-        text: [
-          'Discussed mass with owner including diagnostics for further evaluation. Recommend FNA with cytology. Discussed limitations with owner - may not get diagnostic sample.',
-        ]
-      }
+      diagnostics: {
+        label: 'FNA with cytology',
+      },
+      plan: 'Discussed mass with owner including diagnostics for further evaluation. Recommend FNA with cytology. Discussed limitations with owner - may not get diagnostic sample.',
     },
   },
 };
 
 export const lymphaticsConfig = {
   name: 'Lymphatics',
-  normal: 'Lymphatics: Normal – no lymphadenopathy appreciated',
-  abnormal: 'Lymphatics: Abnormal',
+  normal: {
+    default: 'Lymphatics: Normal – no lymphadenopathy appreciated',
+  },
+  abnormal: {
+    label: 'Lymphatics: Abnormal',
+  },
 };
 
 export const neurologicalConfig = {
   name: 'Neurological',
-  normal:
-    'Neurological: Normal - mentation appropriate; full neurological exam not performed',
-  abnormal: 'Neurological: Abnormal',
+  normal: {
+    default: 'Neurological: Normal - mentation appropriate; full neurological exam not performed',
+  },
+  abnormal: {
+    label: 'Neurological: Abnormal',
+  },
 };
 
 export const rectalConfig = {
   name: 'Rectal',
-  normal: 'Rectal: <u>Not examined</u>',
-  abnormal: 'Rectal: Abnormal',
+  normal: {
+    default: 'Rectal: <u>Not examined</u>',
+  },
+  abnormal: {
+    label: 'Rectal: Abnormal',
+  },
 };
 
 // Helper to get puppy/kitten diagnostics
