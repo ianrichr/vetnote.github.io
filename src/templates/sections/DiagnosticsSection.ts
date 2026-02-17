@@ -3,7 +3,7 @@ import { buildEarsDiagnostics } from '../systems/Ears';
 import { buildEyesDiagnostics } from '../systems/Eyes';
 import { buildIntegumentDiagnostics } from '../systems/Integument';
 import { getPuppyKittenDiagnostics } from '../../config/systemTexts';
-import { diagnosticsConfig } from '../../config/sectionTexts';
+import { diagnosticsConfig, vaccineConfig } from '../../config/sectionTexts';
 
 export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSection => {
   const items: DiagnosticItem[] = [];
@@ -24,6 +24,14 @@ export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSe
     } else if (context.animal === 'Cat' && catDiagnosticText) {
       items.push({ label: catDiagnosticText });
     }
+    
+    // Add vaccine diagnostics even for wellness with no abnormalities
+    context.vaccineOptions.forEach(vaccine => {
+      const config = vaccineConfig[vaccine as keyof typeof vaccineConfig];
+      if (config?.diagnostics) {
+        items.push({ label: config.diagnostics });
+      }
+    });
     
     return { items };
   }
@@ -51,6 +59,14 @@ export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSe
     const puppyKittenDiag = getPuppyKittenDiagnostics();
     items.push(puppyKittenDiag.fecal);
   }
+  
+  // Vaccine diagnostics
+  context.vaccineOptions.forEach(vaccine => {
+    const config = vaccineConfig[vaccine as keyof typeof vaccineConfig];
+    if (config?.diagnostics) {
+      items.push({ label: config.diagnostics });
+    }
+  });
   
   return { items };
 };

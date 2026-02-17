@@ -1,0 +1,269 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths should match snapshot for healthy cat wellness visit 1`] = `
+"
+    <div data-testid=\\"objective-section\\">
+      <p><strong>OBJECTIVE</strong></p>
+      <ul>
+        <li>Subjective Assessment: BAR</li>
+        <li>Ease of Examination (5/5 is the easiest): 5/5</li>
+        <li>Temperament: Well-behaved</li>
+        <li>Oral-Nasal-Throat: Normal</li>
+      <li>Ears: Normal</li>
+      <li>Eyes: Normal</li>
+      <li>Cardiovascular: Normal rate and rhythm; no murmur auscultated</li>
+      <li>Respiratory: Normal bronchovesicular sounds auscultated bilaterally</li>
+      <li>Abdominal: Normal - soft and non-tender on palpation</li>
+      <li>Genitourinary: Normal</li>
+      <li>Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation</li>
+      <li>Integument: Normal</li>
+      <li>Lymphatics: Normal – no lymphadenopathy appreciated</li>
+      <li>Neurological: Normal - mentation appropriate; full neurological exam not performed</li>
+      <li>Rectal: <u>Not examined</u></li>
+      </ul>
+    </div>
+    <br>
+    <div data-testid=\\"diagnostics-section\\">
+      <p><strong>DIAGNOSTICS</strong></p>
+      <ul><li>Fecal ova and parasites - </li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"assessment-section\\">
+      <p><strong>ASSESSMENT</strong></p>
+      <ul><li>Apparently healthy!</li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"plan-section\\">
+      <p><strong>PLAN</strong></p>
+      <ul><li>Discussed above PE findings with owner.</li>
+      <li>Discussed dental health – recommend VOHC approved products for plaque removal.</li>
+      <li>Indoor/outdoor status – discussed risks associated with FIV/FeLV and avian influenza with owner.</li>
+      <li>Discussed parasite prevention – recommend monthly flea/tick prevention year round with Revolution. Recommend annual fecals to lab.</li>
+      <li>Discussed activity and mobility – no changes in jumping on couches/bed or using litterbox per owner report.</li>
+      <li>Discussed vaccines including vaccine reactions.</li>
+      
+        <li>Plan for today:</li>
+          <ul>
+            <li>VOHC handout provided to owner</li>
+          </ul>
+        
+      <li>Owner agrees with above plan and has no questions at this time.</li></ul>
+    </div>
+    <br>
+    <p>KSW</p>
+  "
+`;
+
+exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths should match snapshot for healthy dog wellness visit 1`] = `
+"
+    <div data-testid=\\"objective-section\\">
+      <p><strong>OBJECTIVE</strong></p>
+      <ul>
+        <li>Subjective Assessment: BAR</li>
+        <li>Ease of Examination (5/5 is the easiest): 5/5</li>
+        <li>Temperament: Well-behaved</li>
+        <li>Oral-Nasal-Throat: Normal</li>
+      <li>Ears: Normal</li>
+      <li>Eyes: Normal</li>
+      <li>Cardiovascular: Normal rate and rhythm; no murmur auscultated</li>
+      <li>Respiratory: Normal bronchovesicular sounds auscultated bilaterally</li>
+      <li>Abdominal: Normal - soft and non-tender on palpation</li>
+      <li>Genitourinary: Normal</li>
+      <li>Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation</li>
+      <li>Integument: Normal</li>
+      <li>Lymphatics: Normal – no lymphadenopathy appreciated</li>
+      <li>Neurological: Normal - mentation appropriate; full neurological exam not performed</li>
+      <li>Rectal: <u>Not examined</u></li>
+      </ul>
+    </div>
+    <br>
+    <div data-testid=\\"diagnostics-section\\">
+      <p><strong>DIAGNOSTICS</strong></p>
+      <ul><li>Fecal ova and parasites - </li>
+      <li>HWT - </li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"assessment-section\\">
+      <p><strong>ASSESSMENT</strong></p>
+      <ul><li>Apparently healthy!</li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"plan-section\\">
+      <p><strong>PLAN</strong></p>
+      <ul><li>Discussed above PE findings with owner.</li>
+      <li>Discussed dental health – recommend VOHC approved products for plaque removal.</li>
+      <li>Discussed parasite prevention – recommend monthly flea/tick prevention with Simparica Trio for HW prevention. Recommend annual fecals to lab.</li>
+      <li>Discussed activity and mobility – no changes noted by owner and no signs of arthritis.</li>
+      <li>Discussed vaccines including vaccine reactions.</li>
+      
+        <li>Plan for today:</li>
+          <ul>
+            <li>VOHC handout provided to owner</li>
+          </ul>
+        
+      <li>Owner agrees with above plan and has no questions at this time.</li></ul>
+    </div>
+    <br>
+    <p>KSW</p>
+  "
+`;
+
+exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths should match snapshot for kitten visit 1`] = `
+"
+    <div data-testid=\\"objective-section\\">
+      <p><strong>OBJECTIVE</strong></p>
+      <ul>
+        <li>Subjective Assessment: BAR</li>
+        <li>Ease of Examination (5/5 is the easiest): 5/5</li>
+        <li>Temperament: Well-behaved</li>
+        <li>Oral-Nasal-Throat: Normal – deciduous teeth still present; no cleft palate</li>
+      <li>Ears: Normal</li>
+      <li>Eyes: Normal</li>
+      <li>Cardiovascular: Normal rate and rhythm; no murmur auscultated</li>
+      <li>Respiratory: Normal bronchovesicular sounds auscultated bilaterally</li>
+      <li>Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia</li>
+      <li>Genitourinary: Normal</li>
+      <li>Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation</li>
+      <li>Integument: Normal</li>
+      <li>Lymphatics: Normal – no lymphadenopathy appreciated</li>
+      <li>Neurological: Normal - mentation appropriate; full neurological exam not performed</li>
+      <li>Rectal: <u>Not examined</u></li>
+      </ul>
+    </div>
+    <br>
+    <div data-testid=\\"diagnostics-section\\">
+      <p><strong>DIAGNOSTICS</strong></p>
+      <ul><li>Fecal ova and parasites - </li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"assessment-section\\">
+      <p><strong>ASSESSMENT</strong></p>
+      <ul><li>Apparently healthy kitten!</li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"plan-section\\">
+      <p><strong>PLAN</strong></p>
+      <ul><li>Discussed above PE findings with owner.</li>
+      <li>Discussed diet – recommend continuing kitten diet until 1 yr of age. Discussed risks with grain free and raw diets – do not recommend.</li>
+      <li>Discussed parasite prevention – recommend fecal to lab to assess for parasites. Recommend monthly flea/tick prevention year-round with Revolution.</li>
+      <li>Discussed normal kitten behaviors and environmental enrichment – Ohio State Indoor Initiative handout sent with owner.</li>
+      <li>Discussed common plant toxins including lilies and poinsettias. Gave owner information for ASPCA for plant toxicities.</li>
+      <li>Discussed vaccines with owner (rabies, FVRCP, and FeLV). Recommend FeLV for all kittens under 1 year of age and then annually for all indoor/outdoor cats.</li>
+      <li>Discussed neutering/spaying – recommend at 6 months of age. Discussed risks with procedure.</li>
+      
+        <li>Plan for today:</li>
+          <ul>
+            <li> </li>
+          </ul>
+        
+      <li>Owner agrees with above plan and has no questions at this time.</li></ul>
+    </div>
+    <br>
+    <p>KSW</p>
+  "
+`;
+
+exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths should match snapshot for puppy visit 1`] = `
+"
+    <div data-testid=\\"objective-section\\">
+      <p><strong>OBJECTIVE</strong></p>
+      <ul>
+        <li>Subjective Assessment: BAR</li>
+        <li>Ease of Examination (5/5 is the easiest): 5/5</li>
+        <li>Temperament: Well-behaved</li>
+        <li>Oral-Nasal-Throat: Normal – deciduous teeth still present; no cleft palate</li>
+      <li>Ears: Normal</li>
+      <li>Eyes: Normal</li>
+      <li>Cardiovascular: Normal rate and rhythm; no murmur auscultated</li>
+      <li>Respiratory: Normal bronchovesicular sounds auscultated bilaterally</li>
+      <li>Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia</li>
+      <li>Genitourinary: Normal</li>
+      <li>Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation</li>
+      <li>Integument: Normal</li>
+      <li>Lymphatics: Normal – no lymphadenopathy appreciated</li>
+      <li>Neurological: Normal - mentation appropriate; full neurological exam not performed</li>
+      <li>Rectal: <u>Not examined</u></li>
+      </ul>
+    </div>
+    <br>
+    <div data-testid=\\"diagnostics-section\\">
+      <p><strong>DIAGNOSTICS</strong></p>
+      <ul><li>Fecal ova and parasites - </li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"assessment-section\\">
+      <p><strong>ASSESSMENT</strong></p>
+      <ul><li>Apparently healthy puppy!</li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"plan-section\\">
+      <p><strong>PLAN</strong></p>
+      <ul><li>Discussed above PE findings with owner</li>
+      <li>Discussed diet – recommend continuing puppy diet until at least 1 yr of age. Discussed risks with grain free and raw diets. Do not recommend for future diets.</li>
+      <li>Discussed parasite prevention – recommend fecal to lab to assess for parasites. Recommend monthly flea/tick prevention year round with Simparica Trio. HWT due at 6 months of age.</li>
+      <li>Discussed normal puppy behaviors and training – educated owner on training including crate and potty training.</li>
+      <li>Discussed common toxins with owner including chocolate, grapes, raisins, and xylitol.</li>
+      <li>Discussed vaccines with owner including core (rabies, DHPP, and leptospirosis) and lifestyle (Bordetella and canine influenza vaccine).</li>
+      <li>Discussed neutering/spaying – recommend at ***. Discussed risks with procedure.</li>
+      
+        <li>Plan for today:</li>
+          <ul>
+            <li> </li>
+          </ul>
+        
+      <li>Owner agrees with above plan and has no questions at this time.</li></ul>
+    </div>
+    <br>
+    <p>KSW</p>
+  "
+`;
+
+exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths should match snapshot for sick visit 1`] = `
+"
+    <div data-testid=\\"objective-section\\">
+      <p><strong>OBJECTIVE</strong></p>
+      <ul>
+        <li>Subjective Assessment: BAR</li>
+        <li>Ease of Examination (5/5 is the easiest): 5/5</li>
+        <li>Temperament: Well-behaved</li>
+        <li>Oral-Nasal-Throat: Normal</li>
+      <li>Ears: Normal</li>
+      <li>Eyes: Normal</li>
+      <li>Cardiovascular: Normal rate and rhythm; no murmur auscultated</li>
+      <li>Respiratory: Normal bronchovesicular sounds auscultated bilaterally</li>
+      <li>Abdominal: Normal - soft and non-tender on palpation</li>
+      <li>Genitourinary: Normal</li>
+      <li>Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation</li>
+      <li>Integument: Normal</li>
+      <li>Lymphatics: Normal – no lymphadenopathy appreciated</li>
+      <li>Neurological: Normal - mentation appropriate; full neurological exam not performed</li>
+      <li>Rectal: <u>Not examined</u></li>
+      </ul>
+    </div>
+    <br>
+    <div data-testid=\\"diagnostics-section\\">
+      <p><strong>DIAGNOSTICS</strong></p>
+      <ul><li> </li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"assessment-section\\">
+      <p><strong>ASSESSMENT</strong></p>
+      <ul><li>Apparently healthy!</li></ul>
+    </div>
+    <br>
+    <div data-testid=\\"plan-section\\">
+      <p><strong>PLAN</strong></p>
+      <ul><li>Discussed above PE findings with owner</li>
+      <li>Discussed ***, including possible etiologies (as above) and diagnostics for further evaluation.</li>
+      
+        <li>Plan for today:</li>
+          <ul>
+            <li> </li>
+          </ul>
+        
+      <li>Owner agrees with above plan and has no questions at this time.</li></ul>
+    </div>
+    <br>
+    <p>KSW</p>
+  "
+`;

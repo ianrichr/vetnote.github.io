@@ -78,22 +78,30 @@ export const renderTemplate = (data: TemplateData): string => {
     .join('\n      ');
   
   return `
-    <p><strong>OBJECTIVE</strong></p>
-    <ul>
-      <li>Subjective Assessment: ${data.objective.subjectiveAssessment}</li>
-      <li>Ease of Examination (5/5 is the easiest): ${data.objective.easeOfExamination}</li>
-      <li>Temperament: ${data.objective.temperament}</li>
-      ${objectiveSystemsHtml}
-    </ul>
+    <div data-testid="objective-section">
+      <p><strong>OBJECTIVE</strong></p>
+      <ul>
+        <li>Subjective Assessment: ${data.objective.subjectiveAssessment}</li>
+        <li>Ease of Examination (5/5 is the easiest): ${data.objective.easeOfExamination}</li>
+        <li>Temperament: ${data.objective.temperament}</li>
+        ${objectiveSystemsHtml}
+      </ul>
+    </div>
     <br />
-    <p><strong>DIAGNOSTICS</strong></p>
-    <ul>${diagnosticsHtml}</ul>
+    <div data-testid="diagnostics-section">
+      <p><strong>DIAGNOSTICS</strong></p>
+      <ul>${diagnosticsHtml}</ul>
+    </div>
     <br />
-    <p><strong>ASSESSMENT</strong></p>
-    <ul>${assessmentHtml}</ul>
+    <div data-testid="assessment-section">
+      <p><strong>ASSESSMENT</strong></p>
+      <ul>${assessmentHtml}</ul>
+    </div>
     <br />
-    <p><strong>PLAN</strong></p>
-    <ul>${planHtml}</ul>
+    <div data-testid="plan-section">
+      <p><strong>PLAN</strong></p>
+      <ul>${planHtml}</ul>
+    </div>
     <br />
     <p>${templateFooter}</p>
   `;

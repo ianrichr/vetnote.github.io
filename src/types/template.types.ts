@@ -36,6 +36,9 @@ export interface TemplateContext {
   // Special parameters for specific sub-options
   murmurGrade: number;
   murmurSide: MurmurSide;
+  // Diet and vaccine selections
+  dietOptions: string[];
+  vaccineOptions: string[];
 }
 
 // Structured template item types

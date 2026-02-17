@@ -5,6 +5,8 @@ import SubjectiveAssessmentSelector from "./SubjectiveAssessmentSelector";
 import TemperamentSelector from "./TemperamentSelector";
 import AnimalSelector from "./AnimalSelector";
 import VisitTypeSelector from "./VisitTypeSelector";
+import DietSelector from "./DietSelector";
+import VaccinesSelector from "./VaccinesSelector";
 import { generateTemplate } from "../templates/MainTemplate";
 import { TemplateContext } from "../types/template.types";
 
@@ -18,6 +20,8 @@ const TemplateGenerator: React.FC = () => {
   const [easeOfExamination, setEaseOfExamination] = useState(5);
   const [subjectiveAssessment, setSubjectiveAssessment] = useState("BAR");
   const [temperament, setTemperament] = useState("Well-behaved");
+  const [dietOptions, setDietOptions] = useState<string[]>([]);
+  const [vaccineOptions, setVaccineOptions] = useState<string[]>([]);
   const [copySuccess, setCopySuccess] = useState(false);
   const templateRef = useRef<HTMLDivElement>(null);
 
@@ -67,6 +71,8 @@ const TemplateGenerator: React.FC = () => {
     subOptions,
     murmurGrade,
     murmurSide: murmurSide as '' | 'left' | 'right' | 'bilateral',
+    dietOptions,
+    vaccineOptions,
   };
 
   // Generate template HTML using the new modular system
@@ -122,6 +128,14 @@ const TemplateGenerator: React.FC = () => {
           setMurmurGrade={setMurmurGrade}
           murmurSide={murmurSide}
           setMurmurSide={setMurmurSide}
+        />
+        <DietSelector 
+          selectedOptions={dietOptions}
+          onChange={setDietOptions}
+        />
+        <VaccinesSelector 
+          selectedOptions={vaccineOptions}
+          onChange={setVaccineOptions}
         />
       </div>
       <div style={{ width: "55%", textAlign: "left" }}>

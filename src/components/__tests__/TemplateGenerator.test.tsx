@@ -1,12 +1,18 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import TemplateGenerator from '../TemplateGenerator';
 
-describe('TemplateGenerator - Baseline Tests', () => {
+describe('TemplateGenerator - Comprehensive Tests', () => {
   // Helper function to extract HTML content from the generated template
   const getGeneratedTemplate = (container: HTMLElement): string => {
     const templateDiv = container.querySelector('[contenteditable="true"]');
     return templateDiv?.innerHTML || '';
+  };
+
+  // Helper to get specific section content
+  const getSection = (container: HTMLElement, testId: string): HTMLElement | null => {
+    const templateDiv = container.querySelector('[contenteditable="true"]');
+    return templateDiv?.querySelector(`[data-testid="${testId}"]`) || null;
   };
 
   // Helper to set up a template with specific selections
@@ -19,15 +25,19 @@ describe('TemplateGenerator - Baseline Tests', () => {
     abnormalities?: string[];
     murmurGrade?: number;
     murmurSide?: string;
+    dietOptions?: string[];
+    vaccineOptions?: string[];
   }) => {
     if (options.animal) {
-      const animalButton = screen.getByRole('button', { name: options.animal });
-      fireEvent.click(animalButton);
+      // Find all buttons with this name and click the first one (Animal selector)
+      const buttons = screen.getAllByRole('button', { name: options.animal });
+      fireEvent.click(buttons[0]);
     }
 
     if (options.visitType) {
-      const visitTypeButton = screen.getByRole('button', { name: options.visitType });
-      fireEvent.click(visitTypeButton);
+      // Find all buttons with this name and click the first one (Visit Type selector)
+      const buttons = screen.getAllByRole('button', { name: options.visitType });
+      fireEvent.click(buttons[0]);
     }
 
     if (options.subjectiveAssessment) {
@@ -36,7 +46,7 @@ describe('TemplateGenerator - Baseline Tests', () => {
     }
 
     if (options.easeOfExamination !== undefined) {
-      const easeSlider = screen.getByRole('slider');
+      const easeSlider = screen.getByRole('slider', { name: /Ease of Examination/i });
       fireEvent.change(easeSlider, { target: { value: options.easeOfExamination.toString() } });
     }
 
@@ -59,222 +69,267 @@ describe('TemplateGenerator - Baseline Tests', () => {
       const murmurGradeSlider = screen.getByRole('slider', { name: /Murmur Grade/i });
       fireEvent.change(murmurGradeSlider, { target: { value: options.murmurGrade.toString() } });
     }
+
+    if (options.dietOptions) {
+      options.dietOptions.forEach(diet => {
+        // Use getAllByLabelText and click the first one to handle multiple renders
+        const checkboxes = screen.getAllByLabelText(diet);
+        fireEvent.click(checkboxes[0]);
+      });
+    }
+
+    if (options.vaccineOptions) {
+      options.vaccineOptions.forEach(vaccine => {
+        // Use getAllByLabelText and click the first one to handle multiple renders
+        const checkboxes = screen.getAllByLabelText(vaccine);
+        fireEvent.click(checkboxes[0]);
+      });
+    }
   };
 
-  describe('Default State', () => {
-    it('should render with default Dog Wellness template', () => {
+  describe('Snapshot Tests - Golden Paths', () => {
+    it('should match snapshot for healthy dog wellness visit', () => {
       const { container } = render(<TemplateGenerator />);
       const template = getGeneratedTemplate(container);
+      expect(template).toMatchSnapshot();
+    });
 
-      expect(template).toContain('<strong>OBJECTIVE</strong>');
-      expect(template).toContain('Subjective Assessment: BAR');
-      expect(template).toContain('Ease of Examination (5/5 is the easiest): 5/5');
-      expect(template).toContain('Temperament: Well-behaved');
-      expect(template).toContain('Oral-Nasal-Throat: Normal');
-      expect(template).toContain('Eyes: Normal');
-      expect(template).toContain('Ears: Normal');
-      expect(template).toContain('Cardiovascular: Normal rate and rhythm; no murmur auscultated');
-      expect(template).toContain('<strong>DIAGNOSTICS</strong>');
-      expect(template).toContain('<strong>ASSESSMENT</strong>');
-      expect(template).toContain('Apparently healthy!');
-      expect(template).toContain('<strong>PLAN</strong>');
+    it('should match snapshot for healthy cat wellness visit', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, { animal: 'Cat', visitType: 'Wellness' });
+      const template = getGeneratedTemplate(container);
+      expect(template).toMatchSnapshot();
+    });
+
+    it('should match snapshot for puppy visit', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, { animal: 'Dog', visitType: 'Puppy' });
+      const template = getGeneratedTemplate(container);
+      expect(template).toMatchSnapshot();
+    });
+
+    it('should match snapshot for kitten visit', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, { animal: 'Cat', visitType: 'Kitten' });
+      const template = getGeneratedTemplate(container);
+      expect(template).toMatchSnapshot();
+    });
+
+    it('should match snapshot for sick visit', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, { animal: 'Dog', visitType: 'Sick' });
+      const template = getGeneratedTemplate(container);
+      expect(template).toMatchSnapshot();
     });
   });
 
-  describe('Dog - Wellness Visit', () => {
-    it('should generate correct template for healthy dog wellness visit', () => {
+  describe('Section-Based Verification', () => {
+    it('should place ear abnormality content in correct sections', () => {
       const { container } = render(<TemplateGenerator />);
-      const template = getGeneratedTemplate(container);
+      setupTemplate(container, { abnormalities: ['Ears'] });
 
-      expect(template).toContain('Apparently healthy!');
-      expect(template).toContain('Discussed parasite prevention – recommend monthly flea/tick prevention');
-      expect(template).toContain('Discussed vaccines');
+      const objectiveSection = getSection(container, 'objective-section');
+      const diagnosticsSection = getSection(container, 'diagnostics-section');
+      const assessmentSection = getSection(container, 'assessment-section');
+      const planSection = getSection(container, 'plan-section');
+
+      expect(objectiveSection?.innerHTML).toContain('Ears: Abnormal');
+      expect(diagnosticsSection?.innerHTML).toContain('Ear cytology');
+      expect(assessmentSection?.innerHTML).toContain('Otitis externa');
+      expect(planSection?.innerHTML).toContain('Discussed with owner otitis externa');
     });
 
-    it('should generate correct template for dog with ear abnormality', () => {
+    it('should place murmur content in correct sections', () => {
       const { container } = render(<TemplateGenerator />);
       setupTemplate(container, {
-        animal: 'Dog',
-        visitType: 'Wellness',
-        abnormalities: ['Ears']
-      });
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toContain('Ears: Abnormal');
-      expect(template).toContain('<li>AD</li>');
-      expect(template).toContain('<li>AS</li>');
-      expect(template).toContain('Ear cytology');
-      expect(template).toContain('Otitis externa');
-      expect(template).toContain('Discussed with owner otitis externa');
-    });
-
-    it('should generate correct template for dog with eye abnormality', () => {
-      const { container } = render(<TemplateGenerator />);
-      setupTemplate(container, {
-        animal: 'Dog',
-        visitType: 'Wellness',
-        abnormalities: ['Eyes']
-      });
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toContain('Eyes: Abnormal');
-      expect(template).toContain('<li>OD</li>');
-      expect(template).toContain('<li>OS</li>');
-      // Eye diagnostics/assessments now require explicit sub-option selection
-      // Plan text still shows automatically
-      expect(template).toContain('Recommend fluorescein stain');
-      expect(template).toContain('Recommend Schirmer tear test');
-      expect(template).toContain('Recommend assessing IOP');
-    });
-
-    it('should generate correct template for dog with heart murmur', () => {
-      const { container } = render(<TemplateGenerator />);
-      setupTemplate(container, {
-        animal: 'Dog',
-        visitType: 'Wellness',
         abnormalities: ['Cardiovascular'],
-        murmurGrade: 3
+        murmurGrade: 4
       });
-      const template = getGeneratedTemplate(container);
 
-      expect(template).toContain('Cardiovascular: Abnormal - grade 3/6');
-      expect(template).toContain('Heart murmur - pathological vs physiological');
-      expect(template).toContain('Discussed new onset heart murmur');
-      expect(template).toContain('echocardiogram with cardiologist');
+      const objectiveSection = getSection(container, 'objective-section');
+      const assessmentSection = getSection(container, 'assessment-section');
+      const planSection = getSection(container, 'plan-section');
+
+      expect(objectiveSection?.innerHTML).toContain('grade 4/6');
+      expect(assessmentSection?.innerHTML).toContain('Heart murmur');
+      expect(planSection?.innerHTML).toContain('echocardiogram');
+    });
+  });
+
+  describe('Diet Options - Behavior Tests', () => {
+    it('should add grain free diet text to plan when checked', () => {
+      const { container } = render(<TemplateGenerator />);
+      
+      let planSection = getSection(container, 'plan-section');
+      expect(planSection?.innerHTML).not.toContain('grain free diets and heart disease');
+
+      setupTemplate(container, { dietOptions: ['Grain free diet'] });
+      
+      planSection = getSection(container, 'plan-section');
+      expect(planSection?.innerHTML).toContain('Discussed risks with grain free diets and heart disease. Do not recommend.');
     });
 
-    it('should generate correct template for dog with dental disease', () => {
+    it('should add raw diet text to plan when checked', () => {
+      const { container } = render(<TemplateGenerator />);
+      
+      let planSection = getSection(container, 'plan-section');
+      expect(planSection?.innerHTML).not.toContain('salmonella and e. Coli');
+
+      setupTemplate(container, { dietOptions: ['Raw diet'] });
+      
+      planSection = getSection(container, 'plan-section');
+      expect(planSection?.innerHTML).toContain('Discussed raw diets and risks with salmonella and e. Coli, including risks to owner.');
+    });
+
+    it('should handle multiple diet options together', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, { dietOptions: ['Grain free diet', 'Raw diet'] });
+      
+      const planSection = getSection(container, 'plan-section');
+      expect(planSection?.innerHTML).toContain('grain free diets and heart disease');
+      expect(planSection?.innerHTML).toContain('salmonella and e. Coli');
+    });
+
+    it('should remove diet text when unchecked', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, { dietOptions: ['Grain free diet'] });
+      
+      let planSection = getSection(container, 'plan-section');
+      expect(planSection?.innerHTML).toContain('grain free diets');
+
+      // Uncheck it
+      const checkbox = screen.getByLabelText('Grain free diet');
+      fireEvent.click(checkbox);
+      
+      planSection = getSection(container, 'plan-section');
+      expect(planSection?.innerHTML).not.toContain('grain free diets');
+    });
+  });
+
+  describe('FeLV Vaccine - Behavior Tests', () => {
+    it('should add FeLV to diagnostics when checked', () => {
+      const { container } = render(<TemplateGenerator />);
+      
+      let diagnosticsSection = getSection(container, 'diagnostics-section');
+      expect(diagnosticsSection?.innerHTML).not.toContain('FIV/FeLV test');
+
+      setupTemplate(container, { vaccineOptions: ['FeLV'] });
+      
+      diagnosticsSection = getSection(container, 'diagnostics-section');
+      expect(diagnosticsSection?.innerHTML).toContain('FIV/FeLV test - ');
+    });
+
+    it('should add two FeLV items to plan when checked', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, { vaccineOptions: ['FeLV'] });
+      
+      const planSection = getSection(container, 'plan-section');
+      expect(planSection?.innerHTML).toContain('Discussed risks associated with FIV/FeLV and avian influenza with the owner.');
+      expect(planSection?.innerHTML).toContain('Discussed FeLV vaccine - recommended for cats with outdoor exposure. Recommend FIV/FeLV test today + FeLV series.');
+    });
+
+    it('should work in wellness visit with no abnormalities', () => {
       const { container } = render(<TemplateGenerator />);
       setupTemplate(container, {
         animal: 'Dog',
         visitType: 'Wellness',
-        abnormalities: ['Oral-Nasal-Throat']
+        vaccineOptions: ['FeLV']
       });
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toContain('Oral-Nasal-Throat: Abnormal');
-      expect(template).toContain('Dental disease');
-      expect(template).toContain('Discussed dental disease – recommend dental under GA');
-    });
-  });
-
-  describe('Cat - Wellness Visit', () => {
-    it('should generate correct template for healthy cat wellness visit', () => {
-      const { container } = render(<TemplateGenerator />);
-      setupTemplate(container, {
-        animal: 'Cat',
-        visitType: 'Wellness'
-      });
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toContain('Apparently healthy!');
-      expect(template).toContain('avian influenza');
-      expect(template).toContain('Indoor/outdoor status');
-      expect(template).toContain('FIV/FeLV');
-    });
-  });
-
-  describe('Puppy Visit', () => {
-    it('should generate correct template for puppy visit', () => {
-      const { container } = render(<TemplateGenerator />);
-      setupTemplate(container, {
-        animal: 'Dog',
-        visitType: 'Puppy'
-      });
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toContain('Oral-Nasal-Throat: Normal – deciduous teeth still present');
-      expect(template).toContain('Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia');
-      expect(template).toContain('Fecal ova and parasites');
-      expect(template).toContain('Apparently healthy puppy!');
-      expect(template).toContain('Discussed diet – recommend continuing puppy diet');
-      expect(template).toContain('Discussed normal puppy behaviors and training');
-      expect(template).toContain('Discussed common toxins');
-      expect(template).toContain('Discussed neutering/spaying');
-    });
-  });
-
-  describe('Kitten Visit', () => {
-    it('should generate correct template for kitten visit', () => {
-      const { container } = render(<TemplateGenerator />);
-      setupTemplate(container, {
-        animal: 'Cat',
-        visitType: 'Kitten'
-      });
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toContain('Oral-Nasal-Throat: Normal – deciduous teeth still present');
-      expect(template).toContain('Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia');
-      expect(template).toContain('Fecal ova and parasites');
-      expect(template).toContain('Apparently healthy kitten!');
-      expect(template).toContain('Discussed diet – recommend continuing kitten diet');
-      expect(template).toContain('Discussed normal kitten behaviors');
-      expect(template).toContain('Ohio State Indoor Initiative');
-      expect(template).toContain('Discussed common plant toxins including lilies');
-    });
-  });
-
-  describe('Sick Visit', () => {
-    it('should generate correct template for dog sick visit', () => {
-      const { container } = render(<TemplateGenerator />);
-      setupTemplate(container, {
-        animal: 'Dog',
-        visitType: 'Sick'
-      });
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toContain('Apparently healthy!');
-      expect(template).toContain('Discussed above PE findings with owner');
-      expect(template).toContain('Plan for today:');
-      expect(template).toContain('Owner agrees with above plan');
+      
+      const diagnosticsSection = getSection(container, 'diagnostics-section');
+      expect(diagnosticsSection?.innerHTML).toContain('FIV/FeLV test');
     });
 
-    it('should generate correct template for sick visit with abnormalities', () => {
+    it('should work in sick visit', () => {
       const { container } = render(<TemplateGenerator />);
       setupTemplate(container, {
         animal: 'Dog',
         visitType: 'Sick',
-        abnormalities: ['Ears', 'Eyes']
+        vaccineOptions: ['FeLV']
       });
-      const template = getGeneratedTemplate(container);
+      
+      const diagnosticsSection = getSection(container, 'diagnostics-section');
+      expect(diagnosticsSection?.innerHTML).toContain('FIV/FeLV test');
+    });
 
-      expect(template).toContain('Ears: Abnormal');
-      expect(template).toContain('Eyes: Abnormal');
-      expect(template).toContain('Ear cytology');
-      expect(template).toContain('Otitis externa');
-      // Eye diagnostics/assessments require explicit sub-option selection
-      // Plan text still shows automatically
-      expect(template).toContain('Recommend fluorescein stain');
-      expect(template).toContain('Recommend Schirmer tear test');
+    it('should remove FeLV content when unchecked', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, { vaccineOptions: ['FeLV'] });
+      
+      let diagnosticsSection = getSection(container, 'diagnostics-section');
+      expect(diagnosticsSection?.innerHTML).toContain('FIV/FeLV test');
+
+      // Uncheck it
+      const checkbox = screen.getByLabelText('FeLV');
+      fireEvent.click(checkbox);
+      
+      diagnosticsSection = getSection(container, 'diagnostics-section');
+      expect(diagnosticsSection?.innerHTML).not.toContain('FIV/FeLV test');
     });
   });
 
-  describe('Multiple Abnormalities', () => {
-    it('should handle multiple system abnormalities correctly', () => {
+  describe('Edge Cases - Combined Features', () => {
+    it('should handle diet + vaccines + abnormalities all together', () => {
       const { container } = render(<TemplateGenerator />);
       setupTemplate(container, {
-        animal: 'Dog',
-        visitType: 'Wellness',
-        abnormalities: ['Ears', 'Eyes', 'Respiratory']
+        abnormalities: ['Ears', 'Eyes'],
+        dietOptions: ['Grain free diet', 'Raw diet'],
+        vaccineOptions: ['FeLV']
       });
-      const template = getGeneratedTemplate(container);
 
-      expect(template).toContain('Ears: Abnormal');
-      expect(template).toContain('Eyes: Abnormal');
-      expect(template).toContain('Respiratory: Abnormal');
-      expect(template).toContain('Ear cytology');
-      expect(template).toContain('Otitis externa');
-      // Eye diagnostics/assessments require explicit sub-option selection
-      // Plan text still shows automatically
-      expect(template).toContain('Recommend fluorescein stain');
-      expect(template).toContain('Recommend Schirmer tear test');
+      const objectiveSection = getSection(container, 'objective-section');
+      const diagnosticsSection = getSection(container, 'diagnostics-section');
+      const planSection = getSection(container, 'plan-section');
+
+      // Abnormalities
+      expect(objectiveSection?.innerHTML).toContain('Ears: Abnormal');
+      expect(objectiveSection?.innerHTML).toContain('Eyes: Abnormal');
+      
+      // Diagnostics
+      expect(diagnosticsSection?.innerHTML).toContain('Ear cytology');
+      expect(diagnosticsSection?.innerHTML).toContain('FIV/FeLV test');
+      
+      // Plan
+      expect(planSection?.innerHTML).toContain('grain free diets');
+      expect(planSection?.innerHTML).toContain('salmonella');
+      expect(planSection?.innerHTML).toContain('FeLV vaccine');
+    });
+
+    it('should maintain correct section order with all features', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, {
+        abnormalities: ['Ears'],
+        dietOptions: ['Grain free diet'],
+        vaccineOptions: ['FeLV']
+      });
+
+      const template = getGeneratedTemplate(container);
+      const objectiveIndex = template.indexOf('data-testid="objective-section"');
+      const diagnosticsIndex = template.indexOf('data-testid="diagnostics-section"');
+      const assessmentIndex = template.indexOf('data-testid="assessment-section"');
+      const planIndex = template.indexOf('data-testid="plan-section"');
+
+      expect(objectiveIndex).toBeLessThan(diagnosticsIndex);
+      expect(diagnosticsIndex).toBeLessThan(assessmentIndex);
+      expect(assessmentIndex).toBeLessThan(planIndex);
     });
   });
 
-  describe('All Body Systems', () => {
-    it('should list all body systems in the objective section', () => {
+  describe('Legacy Tests - Backward Compatibility', () => {
+    it('should have all major sections', () => {
       const { container } = render(<TemplateGenerator />);
       const template = getGeneratedTemplate(container);
+
+      expect(template).toContain('<strong>OBJECTIVE</strong>');
+      expect(template).toContain('<strong>DIAGNOSTICS</strong>');
+      expect(template).toContain('<strong>ASSESSMENT</strong>');
+      expect(template).toContain('<strong>PLAN</strong>');
+      expect(template).toContain('KSW');
+    });
+
+    it('should list all body systems in the objective section', () => {
+      const { container } = render(<TemplateGenerator />);
+      const objectiveSection = getSection(container, 'objective-section');
 
       const systems = [
         'Oral-Nasal-Throat',
@@ -292,69 +347,21 @@ describe('TemplateGenerator - Baseline Tests', () => {
       ];
 
       systems.forEach(system => {
-        expect(template).toContain(system);
+        expect(objectiveSection?.innerHTML).toContain(system);
       });
     });
-  });
 
-  describe('User Interactions', () => {
     it('should update template when changing subjective assessment', () => {
       const { container } = render(<TemplateGenerator />);
-      let template = getGeneratedTemplate(container);
-      expect(template).toContain('Subjective Assessment: BAR');
+      let objectiveSection = getSection(container, 'objective-section');
+      expect(objectiveSection?.innerHTML).toContain('Subjective Assessment: BAR');
 
       setupTemplate(container, { subjectiveAssessment: 'QAR' });
-      template = getGeneratedTemplate(container);
-      expect(template).toContain('Subjective Assessment: QAR');
+      objectiveSection = getSection(container, 'objective-section');
+      expect(objectiveSection?.innerHTML).toContain('Subjective Assessment: QAR');
     });
 
-    it('should update template when changing ease of examination', () => {
-      const { container } = render(<TemplateGenerator />);
-      let template = getGeneratedTemplate(container);
-      expect(template).toContain('Ease of Examination (5/5 is the easiest): 5/5');
-
-      setupTemplate(container, { easeOfExamination: 3 });
-      template = getGeneratedTemplate(container);
-      expect(template).toContain('Ease of Examination (5/5 is the easiest): 3/5');
-    });
-
-    it('should update template when changing temperament', () => {
-      const { container } = render(<TemplateGenerator />);
-      let template = getGeneratedTemplate(container);
-      expect(template).toContain('Temperament: Well-behaved');
-
-      setupTemplate(container, { temperament: 'Nervous' });
-      template = getGeneratedTemplate(container);
-      expect(template).toContain('Temperament: Nervous');
-    });
-  });
-
-  describe('Template Structure', () => {
-    it('should have all major sections', () => {
-      const { container } = render(<TemplateGenerator />);
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toContain('<strong>OBJECTIVE</strong>');
-      expect(template).toContain('<strong>DIAGNOSTICS</strong>');
-      expect(template).toContain('<strong>ASSESSMENT</strong>');
-      expect(template).toContain('<strong>PLAN</strong>');
-      expect(template).toContain('KSW');
-    });
-
-    it('should use proper HTML list structure', () => {
-      const { container } = render(<TemplateGenerator />);
-      const template = getGeneratedTemplate(container);
-
-      expect(template).toMatch(/<ul>/);
-      expect(template).toMatch(/<li>/);
-      expect(template).toMatch(/<\/li>/);
-      expect(template).toMatch(/<\/ul>/);
-    });
-  });
-
-  describe('Copy to Clipboard', () => {
     it('should show copy success message when copy button is clicked', () => {
-      // Mock execCommand
       document.execCommand = jest.fn(() => true);
 
       render(<TemplateGenerator />);

@@ -11,7 +11,7 @@ import { buildIntegumentPlan } from '../systems/Integument';
 import { buildLymphaticsPlan } from '../systems/Lymphatics';
 import { buildNeurologicalPlan } from '../systems/Neurological';
 import { buildRectalPlan } from '../systems/Rectal';
-import { planConfig } from '../../config/sectionTexts';
+import { planConfig, dietConfig, vaccineConfig } from '../../config/sectionTexts';
 
 export const buildPlanSection = (context: TemplateContext): PlanSection => {
   const items: PlanItem[] = [];
@@ -82,6 +82,26 @@ export const buildPlanSection = (context: TemplateContext): PlanSection => {
   
   // Add visit-type specific plan items
   items.push(...getVisitSpecificPlanItems(context));
+  
+  // Add diet plan items
+  context.dietOptions.forEach(diet => {
+    const config = dietConfig[diet as keyof typeof dietConfig];
+    if (config?.plan) {
+      items.push({ text: config.plan });
+    }
+  });
+  
+  // Add vaccine plan items
+  context.vaccineOptions.forEach(vaccine => {
+    const config = vaccineConfig[vaccine as keyof typeof vaccineConfig];
+    if (config?.plan) {
+      if (Array.isArray(config.plan)) {
+        config.plan.forEach(text => items.push({ text }));
+      } else {
+        items.push({ text: config.plan });
+      }
+    }
+  });
   
   // Add plan for today and owner agreement
   const etiologiesText = getEtiologiesText(context);

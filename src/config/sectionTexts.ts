@@ -96,4 +96,25 @@ export const planConfig = {
   },
 };
 
+// Diet options configuration
+export const dietConfig = {
+  'Grain free diet': {
+    plan: 'Discussed risks with grain free diets and heart disease. Do not recommend.',
+  },
+  'Raw diet': {
+    plan: 'Discussed raw diets and risks with salmonella and e. Coli, including risks to owner.',
+  },
+};
+
+// Vaccine options configuration
+export const vaccineConfig = {
+  'FeLV': {
+    diagnostics: 'FIV/FeLV test - ',
+    plan: [
+      'Discussed risks associated with FIV/FeLV and avian influenza with the owner.',
+      'Discussed FeLV vaccine - recommended for cats with outdoor exposure. Recommend FIV/FeLV test today + FeLV series.',
+    ],
+  },
+};
+
 export const templateFooter = 'KSW';
