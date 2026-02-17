@@ -7,12 +7,9 @@ import { diagnosticsConfig, vaccineConfig } from '../../config/sectionTexts';
 
 export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSection => {
   const items: DiagnosticItem[] = [];
-
-  // Check if there are any abnormalities
-  const hasAbnormalities = context.abnormalities.length > 0;
   
   // Add healthy diagnositic text if no abnormalities
-  if (!hasAbnormalities && context.visitType === 'Wellness') {
+  if (context.visitType === 'Wellness') {
     let defaultDiagosticText = diagnosticsConfig.wellness.default;
     let dogDiagnosticText = diagnosticsConfig.wellness.dog;
     let catDiagnosticText = diagnosticsConfig.wellness.cat;
@@ -32,8 +29,6 @@ export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSe
         items.push({ label: config.diagnostics });
       }
     });
-    
-    return { items };
   }
   
   // Ears diagnostics (returns array now)

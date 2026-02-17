@@ -147,11 +147,22 @@ export const buildGenericPlan = (
     return items;
   }
   
-  // Base plan items (standardized: array of strings)
-  if (Array.isArray(config.plan)) {
-    config.plan.forEach((text: string) => {
-      items.push({ text });
-    });
+  // Base plan items (standardized: array of strings OR object with text/nestedItems)
+  if (config.plan) {
+    if (Array.isArray(config.plan)) {
+      config.plan.forEach((text: string) => {
+        items.push({ text });
+      });
+    } else if (typeof config.plan === 'object' && config.plan.text) {
+      // Handle object format with nested items at base level
+      items.push({
+        text: config.plan.text,
+        nestedItems: config.plan.nestedItems || []
+      });
+    } else if (typeof config.plan === 'string') {
+      // Handle simple string format
+      items.push({ text: config.plan });
+    }
   }
   
   // Sub-option plan items

@@ -10,11 +10,13 @@ export const oralNasalThroatConfig = {
   abnormal: {
     label: 'Oral-Nasal-Throat: Abnormal',
   },
-  assessment: 'Dental disease',
-  plan: [
-    'Discussed dental disease – recommend dental under GA at this time for COHAT. Discussed risks with GA and ways practice minimizes risk including pre-op bloodwork to assess underlying organ function. Dental estimate sent with owner lvl ***',
-    'Discussed dental health – recommend brushing teeth daily with VOHC approved brushes and toothpaste. Alternatively, recommend any VOHC approved dental products for plaque removal.',
-  ],
+  plan: '',
+  subOptions: {
+    'Dental': {
+      assessment: 'Dental disease',
+      plan: 'Discussed dental disease – recommend dental under GA at this time for COHAT. Discussed risks with GA and ways practice minimizes risk including pre-op bloodwork to assess underlying organ function. Dental estimate sent with owner lvl ***',
+    },
+  },
 };
 
 export const earsConfig = {
@@ -31,10 +33,13 @@ export const earsConfig = {
     details: ['AD', 'AS'],
   },
   assessment: 'Otitis externa',
-  plan: [
-    'Discussed with owner otitis externa. Recommend ear cytology for further evaluation.',
-    'Discussed with owner likely underlying allergies - if ear infections re-occur or if skin issues develop will plan to discuss in more detail',
-  ],
+  plan: {
+    text: 'Discussed with owner otitis externa. Recommend ear cytology for further evaluation.',
+    nestedItems:  [
+      'Discussed cytology results and treatment options.',
+      'Discussed suspicion for underlying allergies - if ear infections re-occur or if skin issues develop will plan to discuss in more detail.',
+    ],
+  },
 };
 
 export const eyesConfig = {
@@ -108,8 +113,8 @@ export const cardiovascularConfig = {
         `Cardiovascular: Abnormal - grade ${grade}/6 ${side} heart murmur`,
       assessment: 'Heart murmur - pathological vs physiological',
       plan: [
-        'Discussed new onset heart murmur with owner including causes (as above) and diagnostics to evaluate further.',
-        'Discussed gold standard is an echocardiogram with cardiologist to evaluate heart structure and function to assess for heart disease. Owner verbally quoted $800 dollars for mobile cardiologist. Also, briefly discussed thoracic radiographs to evaluate for changes in heart size as well as assess lungs. Discussed limitations of thoracic radiographs (unable to determine heart function). Estimate provided – owner to consider.',
+        'Discussed heart murmur incouding possible etiologies.',
+        'Discussed diagnostics - thoracic radiographs and cardiology consult for echocardiogram for further evaluation.',
       ],
     },
   },
