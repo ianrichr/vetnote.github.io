@@ -12,7 +12,7 @@ export const buildAssessmentSection = (context: TemplateContext): AssessmentSect
   const hasAbnormalities = context.abnormalities.length > 0;
   
   // Add healthy assessment if no abnormalities
-  if (!hasAbnormalities) {
+  if (!hasAbnormalities && context.visitType !== 'Sick') {
     let healthyText = assessmentConfig.healthy.default;
     
     if (context.visitType === 'Puppy') {

@@ -51,17 +51,15 @@ export const eyesConfig = {
     label: 'Eyes: Abnormal',
     details: ['OD', 'OS'],
   },
-  plan: [
-    'Recommend fluorescein stain to evaluate for corneal ulcer.',
-    'Recommend Schirmer tear test to evaluate tear production.',
-    'Recommend assessing IOP given PE findings.',
-  ],
   subOptions: {
     'Fluorescein Stain': {
       diagnostics: {
         label: 'Fluorescein stain',
         details: ['OD', 'OS'],
       },
+      plan: [
+        'Recommend fluorescein stain to evaluate for corneal ulcer.',
+      ],
       subOptions: {
         'Corneal Ulcer': {
           assessment: 'Corneal ulcer',
@@ -73,6 +71,9 @@ export const eyesConfig = {
         label: 'Schirmer tear test',
         details: ['OD', 'OS'],
       },
+      plan: [
+        'Recommend Schirmer tear test to evaluate tear production.',
+      ],
       subOptions: {
         'KCS (dry eye)': {
           assessment: 'KCS (dry eye)',
@@ -84,6 +85,9 @@ export const eyesConfig = {
         label: 'Intraocular pressure',
         details: ['OD', 'OS'],
       },
+      plan: [
+        'Recommend assessing IOP given PE findings.',
+      ],
       subOptions: {
         'Glaucoma/anterior uveitis': {
           assessment: 'Glaucoma/anterior uveitis',

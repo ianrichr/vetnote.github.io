@@ -248,7 +248,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
     <br>
     <div data-testid=\\"assessment-section\\">
       <p><strong>ASSESSMENT</strong></p>
-      <ul><li>Apparently healthy!</li></ul>
+      <ul><li></li></ul>
     </div>
     <br>
     <div data-testid=\\"plan-section\\">
