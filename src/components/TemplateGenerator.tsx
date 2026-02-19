@@ -147,6 +147,7 @@ const TemplateGenerator: React.FC = () => {
           style={{
             width: "100%",
             fontFamily: "Arial",
+            fontSize: "10pt",
             border: "1px solid #ccc",
             padding: "10px",
             borderRadius: "5px",
