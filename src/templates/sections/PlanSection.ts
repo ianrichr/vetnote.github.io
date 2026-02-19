@@ -12,6 +12,8 @@ import { buildLymphaticsPlan } from '../systems/Lymphatics';
 import { buildNeurologicalPlan } from '../systems/Neurological';
 import { buildRectalPlan } from '../systems/Rectal';
 import { planConfig, dietConfig, vaccineConfig } from '../../config/sectionTexts';
+import { allSystemConfigsList } from '../../config/systemTexts';
+import { collectPlanForTodayItems } from '../../utils/systemBuilders';
 
 export const buildPlanSection = (context: TemplateContext): PlanSection => {
   const items: PlanItem[] = [];
@@ -109,12 +111,21 @@ export const buildPlanSection = (context: TemplateContext): PlanSection => {
     items.push({ text: etiologiesText });
   }
 
-  // VOHC handout provided to owner should be in nestedItems if it's a wellness
+  // Collect planForToday items from system configs
+  const planForTodayItems = collectPlanForTodayItems(context, allSystemConfigsList);
+  
+  // Build nestedItems array: system items first, then VOHC for wellness
+  const nestedItems: string[] = [...planForTodayItems];
   if (context.visitType === 'Wellness') {
-    items.push({ text: getPlanForTodayText(context), nestedItems: ['VOHC handout provided to owner'] });
-  } else {
-    items.push({ text: getPlanForTodayText(context), nestedItems: [' '] });
+    nestedItems.push('VOHC handout provided to owner');
   }
+  
+  // If no items collected, add empty placeholder
+  if (nestedItems.length === 0) {
+    nestedItems.push(' ');
+  }
+  
+  items.push({ text: getPlanForTodayText(context), nestedItems });
   items.push({ text: getOwnerAgreesText(context) });
   
   return { items };

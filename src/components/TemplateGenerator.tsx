@@ -90,6 +90,11 @@ const TemplateGenerator: React.FC = () => {
       
       // Create temporary element with cleaned HTML for copying
       const temp = document.createElement('div');
+      
+      // Apply font styles to ensure they're preserved in clipboard
+      temp.style.fontFamily = 'Arial';
+      temp.style.fontSize = '10pt';
+      
       temp.innerHTML = clone.innerHTML;
       temp.style.position = 'fixed';
       temp.style.left = '-9999px';

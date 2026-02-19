@@ -57,10 +57,23 @@ export const buildGenericObjective = (
     return { type: 'normal', text: config.normal };
   }
   
-  // Handle object with puppyKitten variant
-  const normalText = context.visitType === 'Puppy' || context.visitType === 'Kitten'
-    ? config.normal.puppyKitten || config.normal.default
-    : config.normal.default || config.normal;
+  // Handle object with visit-type variants
+  let normalText: string;
+  
+  // Check for wellness/sick variants first
+  if (context.visitType === 'Wellness' && config.normal.wellness) {
+    normalText = config.normal.wellness;
+  } else if (context.visitType === 'Sick' && config.normal.sick) {
+    normalText = config.normal.sick;
+  }
+  // Then check for puppyKitten variant
+  else if ((context.visitType === 'Puppy' || context.visitType === 'Kitten') && config.normal.puppyKitten) {
+    normalText = config.normal.puppyKitten;
+  }
+  // Fall back to default
+  else {
+    normalText = config.normal.default || config.normal;
+  }
     
   return { type: 'normal', text: normalText };
 };
@@ -131,6 +144,41 @@ export const buildGenericAssessment = (
       }
     });
   }
+  
+  return items;
+};
+
+// Helper to collect planForToday items from all active abnormalities
+export const collectPlanForTodayItems = (
+  context: TemplateContext,
+  allSystemConfigs: any[]
+): string[] => {
+  const items: string[] = [];
+  
+  allSystemConfigs.forEach(config => {
+    const systemName = config.name;
+    
+    if (!systemName || !context.abnormalities.includes(systemName)) {
+      return;
+    }
+    
+    // Check for base-level planForToday
+    if (config.planForToday) {
+      items.push(config.planForToday);
+    }
+    
+    // Check sub-options for planForToday
+    if (config.subOptions) {
+      const allPaths = getAllPathsForSystem(context.subOptions, systemName);
+      
+      allPaths.forEach(path => {
+        const subConfig = getConfigAtPath(config, path);
+        if (subConfig?.planForToday) {
+          items.push(subConfig.planForToday);
+        }
+      });
+    }
+  });
   
   return items;
 };

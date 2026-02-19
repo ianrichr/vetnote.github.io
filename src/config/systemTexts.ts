@@ -14,7 +14,8 @@ export const oralNasalThroatConfig = {
   subOptions: {
     'Dental': {
       assessment: 'Dental disease',
-      plan: 'Discussed dental disease – recommend dental under GA at this time for COHAT. Discussed risks with GA and ways practice minimizes risk including pre-op bloodwork to assess underlying organ function. Dental estimate sent with owner lvl ***',
+      plan: 'Discussed dental disease – recommend dental under GA at this time for COHAT and discussed risks.',
+      planForToday: 'Dental estimate sent with owner lvl ***',
     },
   },
 };
@@ -158,10 +159,12 @@ export const genitourinaryConfig = {
 export const musculoskeletalConfig = {
   name: 'Musculoskeletal',
   normal: {
-    default: 'Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation',
+    wellness: 'Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation',
+    sick: 'Musculoskeletal: Normal gait, full orthopedic exam not performed.',
+    default: 'Musculoskeletal: Normal',
   },
   abnormal: {
-    label: 'Musculoskeletal: Abnormal',
+    label: 'Musculoskeletal: Abnormal - ',
   },
 };
 
@@ -180,7 +183,7 @@ export const integumentConfig = {
         nestedItems: [
           'Discussed flea prevention - all pets in household treated with prescription products for at least 4 months.',
           'Discussed environmental control including knockout spray.',
-          'Discussed tapeworm transmission - recommend broad spectrum deworker.',
+          'Discussed tapeworm transmission - recommend broad spectrum dewormer.',
           'Discussed pruritus control - recommend Cytopoint or Apoquel.',
         ],
       },

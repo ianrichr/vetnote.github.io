@@ -123,7 +123,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
       <li>Respiratory: Normal bronchovesicular sounds auscultated bilaterally</li>
       <li>Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia</li>
       <li>Genitourinary: Normal</li>
-      <li>Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation</li>
+      <li>Musculoskeletal: Normal</li>
       <li>Integument: Normal</li>
       <li>Lymphatics: Normal – no lymphadenopathy appreciated</li>
       <li>Neurological: Normal - mentation appropriate; full neurological exam not performed</li>
@@ -178,7 +178,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
       <li>Respiratory: Normal bronchovesicular sounds auscultated bilaterally</li>
       <li>Abdominal: Normal - soft and non-tender on palpation; no umbilical hernia</li>
       <li>Genitourinary: Normal</li>
-      <li>Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation</li>
+      <li>Musculoskeletal: Normal</li>
       <li>Integument: Normal</li>
       <li>Lymphatics: Normal – no lymphadenopathy appreciated</li>
       <li>Neurological: Normal - mentation appropriate; full neurological exam not performed</li>
@@ -233,7 +233,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
       <li>Respiratory: Normal bronchovesicular sounds auscultated bilaterally</li>
       <li>Abdominal: Normal - soft and non-tender on palpation</li>
       <li>Genitourinary: Normal</li>
-      <li>Musculoskeletal: Normal – full ROM in all joints, no crepitus or swelling appreciated on palpation</li>
+      <li>Musculoskeletal: Normal gait, full orthopedic exam not performed.</li>
       <li>Integument: Normal</li>
       <li>Lymphatics: Normal – no lymphadenopathy appreciated</li>
       <li>Neurological: Normal - mentation appropriate; full neurological exam not performed</li>
