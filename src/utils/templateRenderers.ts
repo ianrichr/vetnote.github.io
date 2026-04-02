@@ -87,22 +87,22 @@ export const renderTemplate = (data: TemplateData): string => {
         ${objectiveSystemsHtml}
       </ul>
     </div>
-    <br />
+    <p>&nbsp;</p>
     <div data-testid="diagnostics-section">
       <p><strong>DIAGNOSTICS</strong></p>
       <ul>${diagnosticsHtml}</ul>
     </div>
-    <br />
+    <p>&nbsp;</p>
     <div data-testid="assessment-section">
       <p><strong>ASSESSMENT</strong></p>
       <ul>${assessmentHtml}</ul>
     </div>
-    <br />
+    <p>&nbsp;</p>
     <div data-testid="plan-section">
       <p><strong>PLAN</strong></p>
       <ul>${planHtml}</ul>
     </div>
-    <br />
+    <p>&nbsp;</p>
     <p>${templateFooter}</p>
   `;
 };
