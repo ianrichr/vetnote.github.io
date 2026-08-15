@@ -315,6 +315,92 @@ describe('TemplateGenerator - Comprehensive Tests', () => {
     });
   });
 
+  describe('Manual Edit Preservation', () => {
+    const getPreview = (container: HTMLElement): HTMLElement =>
+      container.querySelector('[data-testid="template-preview"]') as HTMLElement;
+
+    // Simulate the user typing into the contentEditable preview. jsdom cannot
+    // produce real keystrokes, so set the content and fire the input event that
+    // a real edit would raise.
+    const editPreview = (preview: HTMLElement, html: string) => {
+      preview.innerHTML = html;
+      fireEvent.input(preview);
+    };
+
+    it('should render generated content into the preview on mount', () => {
+      const { container } = render(<TemplateGenerator />);
+      expect(getPreview(container).innerHTML).toContain('<strong>OBJECTIVE</strong>');
+    });
+
+    it('should keep manual edits when a checkbox is toggled afterwards', () => {
+      const { container } = render(<TemplateGenerator />);
+      const preview = getPreview(container);
+
+      editPreview(preview, '<p>HAND WRITTEN NOTE</p>');
+      fireEvent.click(screen.getByLabelText('Ears'));
+
+      expect(preview.innerHTML).toContain('HAND WRITTEN NOTE');
+      expect(preview.innerHTML).not.toContain('Ears: Abnormal');
+    });
+
+    it('should keep manual edits when animal or visit type changes', () => {
+      const { container } = render(<TemplateGenerator />);
+      const preview = getPreview(container);
+
+      editPreview(preview, '<p>HAND WRITTEN NOTE</p>');
+      fireEvent.click(screen.getAllByRole('button', { name: 'Cat' })[0]);
+      fireEvent.click(screen.getAllByRole('button', { name: 'Sick' })[0]);
+
+      expect(preview.innerHTML).toContain('HAND WRITTEN NOTE');
+    });
+
+    it('should not show the notice until an edit is made', () => {
+      const { container } = render(<TemplateGenerator />);
+      expect(container.querySelector('[data-testid="manual-edits-notice"]')).toBeNull();
+
+      editPreview(getPreview(container), '<p>HAND WRITTEN NOTE</p>');
+
+      expect(container.querySelector('[data-testid="manual-edits-notice"]')).not.toBeNull();
+    });
+
+    it('should regenerate from current selections when edits are discarded', () => {
+      const { container } = render(<TemplateGenerator />);
+      const preview = getPreview(container);
+
+      editPreview(preview, '<p>HAND WRITTEN NOTE</p>');
+      fireEvent.click(screen.getByLabelText('Ears'));
+      fireEvent.click(screen.getByRole('button', { name: /Discard edits and regenerate/i }));
+
+      expect(preview.innerHTML).not.toContain('HAND WRITTEN NOTE');
+      // The selection made while edits were held is applied on regeneration.
+      expect(preview.innerHTML).toContain('Ears: Abnormal');
+      expect(container.querySelector('[data-testid="manual-edits-notice"]')).toBeNull();
+    });
+
+    it('should resume automatic updates after discarding', () => {
+      const { container } = render(<TemplateGenerator />);
+      const preview = getPreview(container);
+
+      editPreview(preview, '<p>HAND WRITTEN NOTE</p>');
+      fireEvent.click(screen.getByRole('button', { name: /Discard edits and regenerate/i }));
+      fireEvent.click(screen.getByLabelText('Eyes'));
+
+      expect(preview.innerHTML).toContain('Eyes: Abnormal');
+    });
+
+    it('should copy manual edits rather than regenerated content', () => {
+      document.execCommand = jest.fn(() => true);
+      const { container } = render(<TemplateGenerator />);
+      const preview = getPreview(container);
+
+      editPreview(preview, '<p>HAND WRITTEN NOTE</p>');
+      fireEvent.click(screen.getByText(/Copy to Clipboard/i));
+
+      expect(preview.innerHTML).toContain('HAND WRITTEN NOTE');
+      expect(screen.getByText(/Copied!/i)).toBeInTheDocument();
+    });
+  });
+
   describe('Legacy Tests - Backward Compatibility', () => {
     it('should have all major sections', () => {
       const { container } = render(<TemplateGenerator />);

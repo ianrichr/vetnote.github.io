@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AbnormalitiesSelector from "./AbnormalitiesSelector";
 import EaseOfExaminationSelector from "./EaseOfExaminationSelector";
 import SubjectiveAssessmentSelector from "./SubjectiveAssessmentSelector";
@@ -23,6 +23,7 @@ const TemplateGenerator: React.FC = () => {
   const [dietOptions, setDietOptions] = useState<string[]>([]);
   const [vaccineOptions, setVaccineOptions] = useState<string[]>([]);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [hasManualEdits, setHasManualEdits] = useState(false);
   const templateRef = useRef<HTMLDivElement>(null);
 
   const toggleAbnormality = (system: string) => {
@@ -77,6 +78,23 @@ const TemplateGenerator: React.FC = () => {
 
   // Generate template HTML using the new modular system
   const templateHTML = generateTemplate(context);
+
+  // Write the generated HTML into the preview imperatively instead of through
+  // dangerouslySetInnerHTML. React owns the node's contents when using that
+  // prop, so any text the user typed into the contentEditable preview was
+  // silently discarded the next time a selection changed and the generated
+  // string differed. Skipping the write while hasManualEdits is true preserves
+  // those edits, and because we never rewrite innerHTML during typing the
+  // caret position is left alone.
+  useEffect(() => {
+    if (!hasManualEdits && templateRef.current) {
+      templateRef.current.innerHTML = templateHTML;
+    }
+  }, [templateHTML, hasManualEdits]);
+
+  // Clearing the flag re-runs the effect above, which regenerates from the
+  // current selections and throws away the manual edits.
+  const discardManualEdits = () => setHasManualEdits(false);
 
   const copyToClipboard = async () => {
     if (templateRef.current) {
@@ -148,7 +166,8 @@ const TemplateGenerator: React.FC = () => {
         <div
           ref={templateRef}
           contentEditable
-          dangerouslySetInnerHTML={{ __html: templateHTML }}
+          onInput={() => setHasManualEdits(true)}
+          data-testid="template-preview"
           style={{
             width: "100%",
             fontFamily: "Arial",
@@ -159,6 +178,34 @@ const TemplateGenerator: React.FC = () => {
             minHeight: "200px",
           }}
         ></div>
+        {hasManualEdits && (
+          <div
+            data-testid="manual-edits-notice"
+            style={{
+              marginTop: "10px",
+              padding: "10px",
+              border: "1px solid #ffa500",
+              borderRadius: "5px",
+              backgroundColor: "#fff8e6",
+            }}
+          >
+            <span>
+              You have edited this note by hand, so it is no longer updating
+              automatically. New selections will not appear until you discard
+              your edits.
+            </span>
+            <button
+              onClick={discardManualEdits}
+              style={{
+                marginLeft: "10px",
+                padding: "5px 10px",
+                cursor: "pointer",
+              }}
+            >
+              Discard edits and regenerate
+            </button>
+          </div>
+        )}
         <div style={{ marginTop: "10px" }}>
           <button onClick={copyToClipboard} style={{ padding: "10px 20px", fontSize: "16px" }}>
             Copy to Clipboard
