@@ -22,17 +22,17 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
       <li>Rectal: <u>Not examined</u></li>
       </ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"diagnostics-section\\">
       <p><strong>DIAGNOSTICS</strong></p>
       <ul><li>Fecal ova and parasites - </li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"assessment-section\\">
       <p><strong>ASSESSMENT</strong></p>
       <ul><li>Apparently healthy!</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"plan-section\\">
       <p><strong>PLAN</strong></p>
       <ul><li>Discussed above PE findings with owner.</li>
@@ -49,7 +49,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
         
       <li>Owner agrees with above plan and has no questions at this time.</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <p>KSW</p>
   "
 `;
@@ -76,18 +76,18 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
       <li>Rectal: <u>Not examined</u></li>
       </ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"diagnostics-section\\">
       <p><strong>DIAGNOSTICS</strong></p>
       <ul><li>Fecal ova and parasites - </li>
       <li>HWT - </li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"assessment-section\\">
       <p><strong>ASSESSMENT</strong></p>
       <ul><li>Apparently healthy!</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"plan-section\\">
       <p><strong>PLAN</strong></p>
       <ul><li>Discussed above PE findings with owner.</li>
@@ -103,7 +103,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
         
       <li>Owner agrees with above plan and has no questions at this time.</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <p>KSW</p>
   "
 `;
@@ -130,17 +130,17 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
       <li>Rectal: <u>Not examined</u></li>
       </ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"diagnostics-section\\">
       <p><strong>DIAGNOSTICS</strong></p>
       <ul><li>Fecal ova and parasites - </li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"assessment-section\\">
       <p><strong>ASSESSMENT</strong></p>
       <ul><li>Apparently healthy kitten!</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"plan-section\\">
       <p><strong>PLAN</strong></p>
       <ul><li>Discussed above PE findings with owner.</li>
@@ -158,7 +158,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
         
       <li>Owner agrees with above plan and has no questions at this time.</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <p>KSW</p>
   "
 `;
@@ -185,17 +185,17 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
       <li>Rectal: <u>Not examined</u></li>
       </ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"diagnostics-section\\">
       <p><strong>DIAGNOSTICS</strong></p>
       <ul><li>Fecal ova and parasites - </li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"assessment-section\\">
       <p><strong>ASSESSMENT</strong></p>
       <ul><li>Apparently healthy puppy!</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"plan-section\\">
       <p><strong>PLAN</strong></p>
       <ul><li>Discussed above PE findings with owner</li>
@@ -213,7 +213,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
         
       <li>Owner agrees with above plan and has no questions at this time.</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <p>KSW</p>
   "
 `;
@@ -240,17 +240,17 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
       <li>Rectal: <u>Not examined</u></li>
       </ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"diagnostics-section\\">
       <p><strong>DIAGNOSTICS</strong></p>
       <ul><li> </li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"assessment-section\\">
       <p><strong>ASSESSMENT</strong></p>
       <ul><li></li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <div data-testid=\\"plan-section\\">
       <p><strong>PLAN</strong></p>
       <ul><li>Discussed above PE findings with owner</li>
@@ -263,7 +263,7 @@ exports[`TemplateGenerator - Comprehensive Tests Snapshot Tests - Golden Paths s
         
       <li>Owner agrees with above plan and has no questions at this time.</li></ul>
     </div>
-    <br>
+    <p>&nbsp;</p>
     <p>KSW</p>
   "
 `;

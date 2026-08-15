@@ -46,7 +46,7 @@ export const buildAssessmentSection = (context: TemplateContext): AssessmentSect
     items.push(...cardiovascularAssessment);
   }
   
-  if (items.length == 0) {
+  if (items.length === 0) {
     items.push({ condition: '' });
   }
 
