@@ -11,4 +11,28 @@ body {
     margin-top: 20px;
     width: 100%;
   }
+
+  .mode-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+  }
+
+  .mode-tab {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #eee;
+    color: #333;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+  }
+
+  .mode-tab-active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
   
