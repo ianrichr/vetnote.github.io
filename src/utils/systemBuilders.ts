@@ -1,4 +1,5 @@
 import { TemplateContext, TemplateItem, DiagnosticItem, AssessmentItem, PlanItem } from '../types/template.types';
+import { allSystemConfigsList } from '../config/systemTexts';
 
 // Helper to walk a config path and get the config at that point
 export const getConfigAtPath = (config: any, path: string): any => {
@@ -41,6 +42,17 @@ export const buildGenericObjective = (
   config: any
 ): TemplateItem => {
   if (context.abnormalities.includes(systemName)) {
+    // A selected sub-option may replace the objective line entirely by
+    // declaring an objectiveLabel function, which receives the full context.
+    // Cardiovascular uses this to put the murmur grade and side in the text.
+    const selectedTopLevel = context.subOptions[systemName] || [];
+    for (const option of selectedTopLevel) {
+      const optionConfig = config.subOptions?.[option];
+      if (typeof optionConfig?.objectiveLabel === 'function') {
+        return { type: 'abnormal', text: optionConfig.objectiveLabel(context) };
+      }
+    }
+
     // Handle abnormal cases
     if (typeof config.abnormal === 'string') {
       return { type: 'abnormal', text: config.abnormal };
@@ -243,3 +255,37 @@ export const buildGenericPlan = (
   
   return items;
 };
+
+// Aggregators over every registered system config.
+//
+// These replace the previous approach of importing one wrapper function per
+// body system into each section file. That was error prone: ObjectiveSection
+// and PlanSection listed all twelve systems, but AssessmentSection listed only
+// four and DiagnosticsSection only three, so an assessment or diagnostic added
+// to any of the remaining configs would never have appeared in the output and
+// nothing would have reported an error. Iterating allSystemConfigsList makes
+// the automatic discovery promised in CONFIGURATION_GUIDE.md real: registering
+// a config in that list is the only wiring step.
+//
+// Output order follows allSystemConfigsList order, which matches the order the
+// section files previously hard coded.
+
+export const buildAllObjectives = (context: TemplateContext): TemplateItem[] =>
+  allSystemConfigsList.map((config) =>
+    buildGenericObjective(context, config.name, config)
+  );
+
+export const buildAllDiagnostics = (context: TemplateContext): DiagnosticItem[] =>
+  allSystemConfigsList.flatMap((config) =>
+    buildGenericDiagnostics(context, config.name, config)
+  );
+
+export const buildAllAssessments = (context: TemplateContext): AssessmentItem[] =>
+  allSystemConfigsList.flatMap((config) =>
+    buildGenericAssessment(context, config.name, config)
+  );
+
+export const buildAllPlans = (context: TemplateContext): PlanItem[] =>
+  allSystemConfigsList.flatMap((config) =>
+    buildGenericPlan(context, config.name, config)
+  );

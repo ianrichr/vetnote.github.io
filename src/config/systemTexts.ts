@@ -1,6 +1,8 @@
 // Configuration for all body system texts
 // Standardized structure for consistency and maintainability
 
+import { TemplateContext } from '../types/template.types';
+
 export const oralNasalThroatConfig = {
   name: 'Oral-Nasal-Throat',
   normal: {
@@ -111,11 +113,12 @@ export const cardiovascularConfig = {
   },
   subOptions: {
     'Murmur': {
-      // Murmur has additional grade/side parameters handled separately
+      // Murmur overrides the objective line so the grade and side appear in it.
+      // Any sub-option may do this by declaring an objectiveLabel function.
       requiresGrade: true,
       requiresSide: true,
-      objectiveLabel: (grade: number, side: string) =>
-        `Cardiovascular: Abnormal - grade ${grade}/6 ${side} heart murmur`,
+      objectiveLabel: (context: TemplateContext) =>
+        `Cardiovascular: Abnormal - grade ${context.murmurGrade}/6 ${context.murmurSide} heart murmur`,
       assessment: 'Heart murmur - pathological vs physiological',
       plan: [
         'Discussed heart murmur incouding possible etiologies.',
