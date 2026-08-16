@@ -9,6 +9,7 @@ import DietSelector from "./DietSelector";
 import VaccinesSelector from "./VaccinesSelector";
 import { generateTemplate } from "../templates/MainTemplate";
 import { TemplateContext } from "../types/template.types";
+import { useCopyToClipboard } from "../../../hooks/useCopyToClipboard";
 
 const TemplateGenerator: React.FC = () => {
   const [animal, setAnimal] = useState("Dog");
@@ -22,9 +23,9 @@ const TemplateGenerator: React.FC = () => {
   const [temperament, setTemperament] = useState("Well-behaved");
   const [dietOptions, setDietOptions] = useState<string[]>([]);
   const [vaccineOptions, setVaccineOptions] = useState<string[]>([]);
-  const [copySuccess, setCopySuccess] = useState(false);
   const [hasManualEdits, setHasManualEdits] = useState(false);
   const templateRef = useRef<HTMLDivElement>(null);
+  const { copySuccess, copyRichText } = useCopyToClipboard();
 
   const toggleAbnormality = (system: string) => {
     setAbnormalities((prev) =>
@@ -96,41 +97,9 @@ const TemplateGenerator: React.FC = () => {
   // current selections and throws away the manual edits.
   const discardManualEdits = () => setHasManualEdits(false);
 
-  const copyToClipboard = async () => {
+  const copyToClipboard = () => {
     if (templateRef.current) {
-      // Clone the template and strip contentEditable attributes to prevent
-      // pasted content from being editable in veterinary charting software
-      const clone = templateRef.current.cloneNode(true) as HTMLElement;
-      clone.removeAttribute('contenteditable');
-      clone.querySelectorAll('[contenteditable]').forEach(el => 
-        el.removeAttribute('contenteditable')
-      );
-      
-      // Create temporary element with cleaned HTML for copying
-      const temp = document.createElement('div');
-      
-      // Apply font styles to ensure they're preserved in clipboard
-      temp.style.fontFamily = 'Arial';
-      temp.style.fontSize = '10pt';
-      
-      temp.innerHTML = clone.innerHTML;
-      temp.style.position = 'fixed';
-      temp.style.left = '-9999px';
-      document.body.appendChild(temp);
-      
-      // Select and copy the cleaned content
-      const range = document.createRange();
-      range.selectNodeContents(temp);
-      window.getSelection()?.removeAllRanges();
-      window.getSelection()?.addRange(range);
-      document.execCommand('copy');
-      
-      // Cleanup
-      document.body.removeChild(temp);
-      window.getSelection()?.removeAllRanges();
-
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000);
+      copyRichText(templateRef.current);
     }
   };
 
