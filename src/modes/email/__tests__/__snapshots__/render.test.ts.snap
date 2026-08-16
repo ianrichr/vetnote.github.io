@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renderEmailBody CKD template should match snapshot 1`] = `
+"Hello,
+
+As discussed over the phone, I wanted to send a follow-up email with additional information about chronic kidney disease and links to prescription kidney care diets. A kidney diet can help slow the progression of kidney disease in cats. Wet food is better for kidney health, but either wet or dry is okay. You can order the kidney diet from chewy.com - see the links below.
+
+https://www.chewy.com/hills-prescription-diet-kd-kidney/dp/54761 Dry food
+
+https://www.chewy.com/hills-prescription-diet-kd-kidney/dp/110400 Wet food
+
+I recommend slowly transitioning to the new diet - see below:
+Days 1&2 - feed 1/4 new food mixed with 3/4 old food
+Days 3&4 - feed 1/2 new food mixed with 1/2 old food
+Days 5&6 - feed 3/4 new food mixed with 1/4 old food
+Days 7+ - feed 100% new diet
+
+Below are links to more information on chronic kidney disease.
+
+https://veterinarypartner.vin.com/default.aspx?pid=19239&id=4951452
+
+https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/chronic-kidney-disease
+
+I recommend rechecking *** kidney values in *** months.
+
+Please let me know if you have any questions.
+"
+`;
