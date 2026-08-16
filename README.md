@@ -23,37 +23,37 @@ The project has been refactored into a modular architecture for easier maintenan
 
 ```
 src/
-├── components/              # React UI components
-│   ├── TemplateGenerator.tsx       # Main component (orchestrates UI)
-│   ├── AnimalSelector.tsx          # Animal type selector
-│   ├── VisitTypeSelector.tsx       # Visit type selector
-│   ├── AbnormalitiesSelector.tsx   # Body system abnormality selector
-│   └── ...other selectors
-│
-├── templates/               # Template generation logic
-│   ├── MainTemplate.ts             # Main orchestrator for template generation
-│   ├── systems/                    # Individual body system builders
-│   │   ├── OralNasalThroat.ts
-│   │   ├── Ears.ts
-│   │   ├── Eyes.ts
-│   │   ├── Cardiovascular.ts
-│   │   └── ...other systems
-│   └── sections/                   # Section-level template builders
-│       ├── ObjectiveSection.ts     # Builds Objective section
-│       ├── DiagnosticsSection.ts   # Builds Diagnostics section
-│       ├── AssessmentSection.ts    # Builds Assessment section
-│       └── PlanSection.ts          # Builds Plan section
-│
-├── config/                  # Configuration and text content
-│   ├── systemTexts.ts              # Text for all body systems
-│   └── sectionTexts.ts             # Text for plan/assessment sections
-│
-├── types/                   # TypeScript type definitions
-│   └── template.types.ts           # All template-related types
-│
-└── utils/                   # Utility functions
-    └── templateRenderers.ts        # HTML rendering functions
+├── App.tsx                  # Tab shell, renders one tab per generator mode
+├── modes/
+│   ├── types.ts             # TemplateMode contract
+│   ├── registry.ts          # MODES list, the only place a mode is registered
+│   └── chart/               # Chart note generator, self-contained
+│       ├── components/              # React UI components
+│       │   ├── TemplateGenerator.tsx    # Chart panel (orchestrates UI)
+│       │   ├── AnimalSelector.tsx
+│       │   ├── VisitTypeSelector.tsx
+│       │   ├── AbnormalitiesSelector.tsx
+│       │   └── ...other selectors
+│       ├── templates/
+│       │   ├── MainTemplate.ts          # Orchestrates template generation
+│       │   └── sections/                # Section-level builders
+│       │       ├── ObjectiveSection.ts
+│       │       ├── DiagnosticsSection.ts
+│       │       ├── AssessmentSection.ts
+│       │       └── PlanSection.ts
+│       ├── config/
+│       │   ├── systemTexts.ts           # Text and options for all body systems
+│       │   └── sectionTexts.ts          # Text for plan/assessment sections
+│       ├── types/
+│       │   └── template.types.ts
+│       └── utils/
+│           ├── systemBuilders.ts        # Generic builders and aggregators
+│           └── templateRenderers.ts     # HTML rendering functions
 ```
+
+There are no per-system files. Every body system is described entirely by its
+config object in `systemTexts.ts`, and the section builders iterate
+`allSystemConfigsList` to assemble output.
 
 ## Development Commands
 
@@ -83,7 +83,7 @@ HTTPS=true
 ```bash
 npm test
 ```
-Runs all unit tests. Tests are located in `src/components/__tests__/`.
+Runs all unit tests. Tests are located in `src/modes/chart/components/__tests__/`.
 
 To run tests without watch mode:
 ```bash
@@ -135,19 +135,22 @@ This automatically:
 
 VetNote uses a **generic builder pattern** that eliminates code duplication across all 12 body systems:
 
-- **Generic Builders** (`src/utils/systemBuilders.ts`): Four reusable functions that work for ANY body system
+- **Generic Builders** (`src/modes/chart/utils/systemBuilders.ts`): reusable functions that work for ANY body system
   - `buildGenericObjective()` - Handles objective section for all systems
   - `buildGenericDiagnostics()` - Handles diagnostics section for all systems
   - `buildGenericAssessment()` - Handles assessment section for all systems
   - `buildGenericPlan()` - Handles plan section with nested items support for all systems
 
-- **System Files** (`src/templates/systems/*.ts`): Each system file is now just 4 simple one-liners that call the generic builders
+- **Aggregators** in the same file (`buildAllObjectives`, `buildAllDiagnostics`,
+  `buildAllAssessments`, `buildAllPlans`) run those builders across every config
+  in `allSystemConfigsList`. The section builders call the aggregators, so a
+  system never needs its own file or its own import anywhere.
 
 **Benefits:**
-- ✅ **80% code reduction**: Each system file reduced from 100+ lines to ~20 lines
-- ✅ **Consistency**: All systems behave identically
-- ✅ **Maintainability**: Fix bugs once, applies to all systems
-- ✅ **Extensibility**: Add features to generic builders, all systems get them automatically
+- **No per-system code**: a body system is a config object and nothing else
+- **Consistency**: All systems behave identically
+- **Maintainability**: Fix bugs once, applies to all systems
+- **Extensibility**: Add features to generic builders, all systems get them automatically
 
 ### Configuration-Driven Architecture
 
@@ -158,7 +161,7 @@ VetNote uses a powerful configuration-driven system that makes adding new templa
 To add new diagnostic options with findings (like IOP test with Glaucoma finding):
 
 ```typescript
-// In src/config/systemTexts.ts
+// In src/modes/chart/config/systemTexts.ts
 export const eyesConfig = {
   name: 'Eyes',  // Name property enables auto-discovery
   // ... existing config
@@ -208,36 +211,42 @@ For comprehensive documentation on the configuration system, see **[CONFIGURATIO
 
 ### Adding New Text Content
 
-1. **For body system text**: Edit `src/config/systemTexts.ts`
+1. **For body system text**: Edit `src/modes/chart/config/systemTexts.ts`
    - Add new properties to the relevant system config
    - Add sub-options with nested findings
    - Example: See `eyesConfig` for nested diagnostic options
 
-2. **For plan/assessment text**: Edit `src/config/sectionTexts.ts`
+2. **For plan/assessment text**: Edit `src/modes/chart/config/sectionTexts.ts`
    - Add new plan items for visit types
    - Modify assessment configurations
 
-### Adding New Body System Logic
+### Adding a New Body System
 
-1. **Create system builder**: Add new file in `src/templates/systems/`
-   - Follow the pattern of existing systems (e.g., `Ears.ts`)
-   - Implement: `buildXObjective`, `buildXDiagnostics`, `buildXAssessment`, `buildXPlan`
+1. Add a config object in `systemTexts.ts` with a `name` property
+2. Append it to `allSystemConfigsList` in the same file
+3. Add the system name to the `SystemName` type in `types/template.types.ts`
+4. Add the name to the `systems` array in `AbnormalitiesSelector.tsx`
 
-2. **Update section builders**: Import and use in `src/templates/sections/`
-   - Add to `ObjectiveSection.ts` to include in template
-
-3. **Update types**: Add new system name to `SystemName` type in `src/types/template.types.ts`
+No builder file is needed. The section builders discover the config through
+`allSystemConfigsList`.
 
 ### Adding New Visit Types
 
-1. Update `VisitType` in `src/types/template.types.ts`
-2. Add configuration in `src/config/sectionTexts.ts`
-3. Update logic in `src/templates/sections/PlanSection.ts`
-4. Add UI option in `src/components/VisitTypeSelector.tsx`
+1. Update `VisitType` in `src/modes/chart/types/template.types.ts`
+2. Add configuration in `src/modes/chart/config/sectionTexts.ts`
+3. Update logic in `src/modes/chart/templates/sections/PlanSection.ts`
+4. Add UI option in `src/modes/chart/components/VisitTypeSelector.tsx`
+
+### Adding a New Generator Mode
+
+1. Build a panel component that owns its own state
+2. Append an entry to `MODES` in `src/modes/registry.ts`
+
+The tab shell in `App.tsx` picks it up automatically.
 
 ### Modifying HTML Output
 
-Edit the rendering functions in `src/utils/templateRenderers.ts` to change how the structured data is converted to HTML.
+Edit the rendering functions in `src/modes/chart/utils/templateRenderers.ts` to change how the structured data is converted to HTML.
 
 ## Testing
 
@@ -260,7 +269,7 @@ npm test -- --testNamePattern="should generate correct template for puppy visit"
 
 ### Adding New Tests
 
-Add test cases to `src/components/__tests__/TemplateGenerator.test.tsx` following the existing patterns.
+Add test cases to `src/modes/chart/components/__tests__/TemplateGenerator.test.tsx` following the existing patterns.
 
 ## Architecture Benefits
 

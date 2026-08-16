@@ -10,34 +10,26 @@ VetNote uses a **generic builder pattern** that eliminates code duplication acro
 
 ### How It Works
 
-**1. Generic Builders** (`src/utils/systemBuilders.ts`)
+**1. Generic Builders** (`src/modes/chart/utils/systemBuilders.ts`)
 - `buildGenericObjective()` - Works for ANY system's objective section
 - `buildGenericDiagnostics()` - Works for ANY system's diagnostics section  
 - `buildGenericAssessment()` - Works for ANY system's assessment section
 - `buildGenericPlan()` - Works for ANY system's plan section
 
-**2. System Files** (`src/templates/systems/*.ts`)
-Each system file is now just 4 simple one-liners:
+**2. Aggregators** (same file)
+`buildAllObjectives`, `buildAllDiagnostics`, `buildAllAssessments` and
+`buildAllPlans` run the generic builders across every config in
+`allSystemConfigsList`. The section builders call these, so there are no
+per-system files and no per-system imports:
 
 ```typescript
-export const buildIntegumentObjective = (context: TemplateContext): TemplateItem => {
-  return buildGenericObjective(context, 'Integument', integumentConfig);
-};
-
-export const buildIntegumentDiagnostics = (context: TemplateContext): DiagnosticItem[] => {
-  return buildGenericDiagnostics(context, 'Integument', integumentConfig);
-};
-
-export const buildIntegumentAssessment = (context: TemplateContext): AssessmentItem[] => {
-  return buildGenericAssessment(context, 'Integument', integumentConfig);
-};
-
-export const buildIntegumentPlan = (context: TemplateContext): PlanItem[] => {
-  return buildGenericPlan(context, 'Integument', integumentConfig);
-};
+export const buildAllPlans = (context: TemplateContext): PlanItem[] =>
+  allSystemConfigsList.flatMap((config) =>
+    buildGenericPlan(context, config.name, config)
+  );
 ```
 
-**That's it!** All 12 body systems use this same pattern.
+**That's it!** All 12 body systems are described purely by their config objects.
 
 ### Benefits
 
@@ -77,7 +69,7 @@ This renders as:
 The system supports **infinitely nested sub-options**. Here's what it looks like:
 
 ```typescript
-// In src/config/systemTexts.ts
+// In src/modes/chart/config/systemTexts.ts
 export const systemConfig = {
   normal: 'System: Normal',
   abnormal: {
@@ -125,7 +117,7 @@ export const systemConfig = {
 
 ## How It Works
 
-### 1. Configuration (`src/config/systemTexts.ts`)
+### 1. Configuration (`src/modes/chart/config/systemTexts.ts`)
 
 Each body system can have a `subOptions` object:
 
@@ -142,7 +134,7 @@ subOptions: {
 }
 ```
 
-### 2. Automatic UI Generation (`src/components/AbnormalitiesSelector.tsx`)
+### 2. Automatic UI Generation (`src/modes/chart/components/AbnormalitiesSelector.tsx`)
 
 The component automatically:
 - Reads `subOptions` from the config
@@ -164,7 +156,7 @@ The system builders automatically:
 
 ### Step 1: Add to Configuration
 
-Edit `src/config/systemTexts.ts`:
+Edit `src/modes/chart/config/systemTexts.ts`:
 
 ```typescript
 export const [systemName]Config = {
@@ -187,7 +179,7 @@ export const [systemName]Config = {
 
 ### Step 2: Register in allSystemConfigsList
 
-Edit `src/config/systemTexts.ts` and add your new config to the `allSystemConfigsList` array at the bottom:
+Edit `src/modes/chart/config/systemTexts.ts` and add your new config to the `allSystemConfigsList` array at the bottom:
 
 ```typescript
 export const allSystemConfigsList = [
@@ -214,31 +206,24 @@ export const yourSystemConfig = {
 };
 ```
 
-### Step 4: Update System Builder (if needed)
+### Step 4: Nothing
 
-Most systems already support sub-options generically. If your system doesn't have sub-option support yet, follow the pattern in `src/templates/systems/Eyes.ts`:
+There is no builder step. Every system, including sub-options at any depth, is
+handled by the generic builders and reached through `allSystemConfigsList`. The
+only remaining UI step is adding the system name to the `systems` array in
+`AbnormalitiesSelector.tsx` so its checkbox renders.
+
+If a sub-option needs to replace its system's objective line (as a heart murmur
+does, to include grade and side), give it an `objectiveLabel` function that
+receives the context:
 
 ```typescript
-export const buildYourSystemDiagnostics = (context: TemplateContext): DiagnosticItem[] => {
-  const { abnormalities, subOptions } = context;
-  const items: DiagnosticItem[] = [];
-  
-  if (abnormalities.includes('YourSystem') && yourSystemConfig.subOptions) {
-    const selectedOptions = subOptions['YourSystem'] || [];
-    
-    selectedOptions.forEach(option => {
-      const config = (yourSystemConfig.subOptions as Record<string, any>)?.[option];
-      if (config?.diagnostics) {
-        items.push({
-          label: config.diagnostics.label,
-          details: config.diagnostics.details,
-        });
-      }
-    });
-  }
-  
-  return items;
-};
+subOptions: {
+  'Murmur': {
+    objectiveLabel: (context: TemplateContext) =>
+      `Cardiovascular: Abnormal - grade ${context.murmurGrade}/6 ${context.murmurSide} heart murmur`,
+  },
+}
 ```
 
 ---
@@ -552,6 +537,6 @@ See the main README.md for:
 - Architecture overview
 
 For specific questions about adding features, refer to the examples in:
-- `src/config/systemTexts.ts` (Eyes and Cardiovascular configs)
-- `src/templates/systems/Eyes.ts` (Generic sub-option handling)
-- `src/components/AbnormalitiesSelector.tsx` (UI generation)
+- `src/modes/chart/config/systemTexts.ts` (Eyes and Cardiovascular configs)
+- `src/modes/chart/utils/systemBuilders.ts` (generic builders and aggregators)
+- `src/modes/chart/components/AbnormalitiesSelector.tsx` (UI generation)
