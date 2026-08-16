@@ -31,12 +31,6 @@ export const buildDiagnosticsSection = (context: TemplateContext): DiagnosticsSe
     if (speciesText) {
       items.push({ label: speciesText });
     }
-
-    // NOTE: vaccine diagnostics are appended again at the end of this function,
-    // so a Wellness visit with a vaccine selected currently lists the same test
-    // twice. Preserved here to keep this refactor output identical; fixed in the
-    // following commit.
-    items.push(...buildVaccineDiagnostics(context));
   }
 
   items.push(...buildAllDiagnostics(context));

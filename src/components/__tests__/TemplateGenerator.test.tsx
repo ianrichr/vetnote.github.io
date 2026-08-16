@@ -252,6 +252,20 @@ describe('TemplateGenerator - Comprehensive Tests', () => {
       expect(diagnosticsSection?.innerHTML).toContain('FIV/FeLV test');
     });
 
+    it('should list a vaccine diagnostic only once on a wellness visit', () => {
+      const { container } = render(<TemplateGenerator />);
+      setupTemplate(container, {
+        animal: 'Cat',
+        visitType: 'Wellness',
+        vaccineOptions: ['FeLV'],
+      });
+
+      const diagnosticsSection = getSection(container, 'diagnostics-section');
+      const occurrences =
+        diagnosticsSection?.innerHTML.match(/FIV\/FeLV test/g)?.length ?? 0;
+      expect(occurrences).toBe(1);
+    });
+
     it('should remove FeLV content when unchecked', () => {
       const { container } = render(<TemplateGenerator />);
       setupTemplate(container, { vaccineOptions: ['FeLV'] });
